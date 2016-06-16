@@ -1,0 +1,79 @@
+SET foreign_key_checks = 0;
+DROP TABLE task;
+DROP TABLE project;
+DROP TABLE story;
+DROP TABLE user;
+DROP TABLE comment;
+DROP TABLE message;
+SET foreign_key_checks = 1;
+​
+CREATE TABLE user
+(
+id          INT NOT NULL AUTO_INCREMENT,
+email       VARCHAR(30) NOT NULL,
+password    VARCHAR(100) NOT NULL,
+PRIMARY KEY (id, email)
+);
+​
+CREATE TABLE comment
+(
+id              INT NOT NULL AUTO_INCREMENT,
+comment_text    TEXT,
+task            INT NOT NULL,
+created_by      INT NOT NULL,
+created_at      DATE,
+PRIMARY KEY (id),
+FOREIGN KEY (created_by) REFERENCES user(id)
+);
+​
+CREATE TABLE message
+(
+id              INT NOT NULL AUTO_INCREMENT,
+message_text    TEXT,
+created_by      INT NOT NULL,
+created_at      DATE,
+PRIMARY KEY (id),
+FOREIGN KEY (created_by) REFERENCES user(id)
+);
+​
+CREATE TABLE task
+(
+id              INT NOT NULL AUTO_INCREMENT,
+description     TEXT,
+name            VARCHAR(50),
+comments        INT NOT NULL,
+status          VARCHAR(10),
+type            VARCHAR(10),
+PRIMARY KEY (id),
+FOREIGN KEY (comments) REFERENCES comment(id)
+);
+​
+CREATE TABLE project
+(
+id              INT NOT NULL AUTO_INCREMENT,
+description     TEXT,
+name            VARCHAR(50),
+project_devs    INT NOT NULL,
+stories         INT NOT NULL,
+tasks           INT NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (project_devs) REFERENCES user(id),
+FOREIGN KEY (tasks) REFERENCES task(id)
+); 
+​
+CREATE TABLE story
+(
+id               INT NOT NULL AUTO_INCREMENT,
+project          INT NOT NULL,
+description      TEXT,
+name             VARCHAR(50),
+assigned_to_devs INT,
+category         VARCHAR(20),
+comments         TEXT,
+sub_tasks        INT,
+created_by       VARCHAR(50),
+created_at       DATE,
+PRIMARY KEY (id),
+FOREIGN KEY (sub_tasks) REFERENCES task(id),
+FOREIGN KEY (assigned_to_devs) REFERENCES user(id)
+);
