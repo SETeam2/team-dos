@@ -32,28 +32,24 @@ h1, h2 {
 
 <body>
 
-<h1>Team Dos</h1>
-<form method="post" action="login.php">
-	<h2>Login</h2>
-	<table>
-		<tr>
-			<td>Email:</td>
-			<td><input type="email" name="email" required></td>
-		</tr>
-		<tr>
-			<td>Password:</td>
-			<td><input type="password" name="password" required></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><input type="submit" name="submit" value="Login"></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><a href="new_account.html">Create New Account</a></td>
-		</tr>
-	</table>
-</form>
+	<script src="./fbapp/fb.js">
+
+	</script>
+<div
+  class="fb-like"
+  data-share="true"
+  data-width="450"
+  data-show-faces="true">
+</div>
+	
+	<div id="content" style="width: 70%; float: left;">
+		<h1>Welcome to the TEAM DOS website!</h1>
+	</div>
+
+
+<div id="sidebar" style="width: 20%; float: right">
+	<div class="fb-login-button" data-scope = "public_profile,email" onlogin="checkLoginState();"></div>	
+</div>
 
 </body>
 
