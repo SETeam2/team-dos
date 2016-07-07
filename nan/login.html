@@ -51,9 +51,10 @@
 
                                 <button type="submit" name="submit" class="btn btn-lg btn-success btn-block">Login</button>
 
-                                  <a class="btn btn-block btn-lg btn-primary">
-                                    <span class="fa fa-facebook"></span> Login with Facebook (not work yet)
-                                  </a>
+                                <div class="btn btn-block btn-lg btn-primary" data-scope = "public_profile,email" onclick='login();'>
+                                    <span class="fa fa-facebook"></span> Login with Facebook
+                                 </div>
+
 
                                 <div class="row border-top">
                                 </div>
@@ -71,6 +72,7 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="lib/js/bootstrap.min.js"></script>
+    <script src="lib/fbapp/fb.js"></script>
 
 
 </body>
