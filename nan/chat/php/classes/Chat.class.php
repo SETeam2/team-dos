@@ -118,6 +118,7 @@ class Chat{
 			// Returning the GMT (UTC) time of the chat creation:
 			
 			$chat->time = array(
+				'ddmmyyyy'	=> gmdate('m/d/Y',strtotime($chat->ts)),
 				'hours'		=> gmdate('H',strtotime($chat->ts)),
 				'minutes'	=> gmdate('i',strtotime($chat->ts))
 			);

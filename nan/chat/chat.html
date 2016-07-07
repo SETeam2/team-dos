@@ -502,7 +502,7 @@ var chat = {
                 params = {
                     id          : tempID,
                     author      : chat.data.name,
-                    email  : chat.data.email,
+                    email       : chat.data.email,
                     text        : text.replace(/</g,'&lt;').replace(/>/g,'&gt;')
                 };
 
@@ -601,7 +601,7 @@ var chat = {
                 arr = [
                     '<div class="chat chat-',params.id,'"><span class="email"><img src="',params.email,
                     '" width="23" height="23" onload="this.style.visibility=\'visible\'" />','</span><span class="author"><b>',params.author,
-                    ':</b></span><span class="text">',params.text,'</span><span class="time">',params.time,'</span></div>'];
+                    ':</b></span><span class="text">',params.text,'</span><span class="time"><b>',params.time,'</b></span></div>'];
             break;
             
             case 'user':
@@ -626,6 +626,8 @@ var chat = {
         // All times are displayed in the user's timezone
         
         var d = new Date();
+        var ddmmyyyy;
+
         if(params.time) {
             
             // PHP returns the time in UTC (GMT). We use it to feed the date
@@ -633,9 +635,18 @@ var chat = {
             // internally converts it for us.
             
             d.setUTCHours(params.time.hours,params.time.minutes);
+            ddmmyyyy = params.time.ddmmyyyy;
+        }else{
+            var dd = d.getDate();
+            var mm = d.getMonth()+1; //January is 0!
+            var yyyy = d.getFullYear();
+
+            ddmmyyyy = (dd < 10 ? '0' : '' ) + dd + '/' + 
+                       (mm < 10 ? '0' : '' ) + mm + '/' + yyyy;
         }
-        
-        params.time = (d.getHours() < 10 ? '0' : '' ) + d.getHours()+':'+
+   
+        params.time = ddmmyyyy + ' ' +
+                      (d.getHours() < 10 ? '0' : '' ) + d.getHours()+':'+
                       (d.getMinutes() < 10 ? '0':'') + d.getMinutes();
         
         var markup = chat.render('chatLine',params),
