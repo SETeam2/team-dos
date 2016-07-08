@@ -11,6 +11,7 @@ create table projects
 (
 id int not null auto_increment,
 name varchar(64) not null,
+password varchar(24) not null,
 primary key (id)
 );
 
@@ -37,7 +38,7 @@ create table comments
 (
 	id int PRIMARY KEY REFERENCES posts (id),
 	parent_post_id int NOT NULL,
-	comment_text varchar(255) NOT NULL,
+	comment_text text NOT NULL,
 	created_at TIMESTAMP REFERENCES posts (created_at),
 	created_by_developer int,
 	FOREIGN KEY (parent_post_id) REFERENCES posts (id) ON DELETE CASCADE,
@@ -47,7 +48,7 @@ create table comments
 create table messages
 (
 id int PRIMARY KEY REFERENCES posts (id),
-messages_text varchar(255) NOT NULL,
+message_text text,
 created_by_developer int,
 created_at TIMESTAMP REFERENCES posts (created_at),
 FOREIGN KEY (created_by_developer) REFERENCES posts(created_by)
@@ -57,7 +58,7 @@ create table stories
 (
 id int PRIMARY KEY REFERENCES posts (id),
 story_name varchar(128) not null,
-story_description varchar(4096) not null,
+story_text text,
 created_by_developer int,
 created_at TIMESTAMP REFERENCES posts (created_at),
 FOREIGN KEY (created_by_developer) REFERENCES posts(created_by)
@@ -68,9 +69,19 @@ create table tasks
 id int PRIMARY KEY REFERENCES posts (id),
 story_id int,
 task_name varchar(128) not null,
-task_description varchar(4096) not null,
+task_text text not null,
 created_by_developer int NOT NULL,
 created_at TIMESTAMP REFERENCES posts (created_at),
 FOREIGN KEY (created_by_developer) REFERENCES posts(created_by),
 FOREIGN KEY (story_id) REFERENCES stories(id)
 );
+
+INSERT INTO projects ( name, password )
+                       VALUES
+                       ( 'hindenburg', 'passwordh' ),
+                       ( 'titanic', 'passwordt' );
+
+ALTER TABLE tasks ADD priority varchar(12) NOT NULL;
+ALTER TABLE tasks ADD status varchar(12) NOT NULL;
+ALTER TABLE tasks ADD modified_at TIMESTAMP NOT NULL;
+ALTER TABLE tasks ADD assigned_to int NOT NULL REFERENCES project_developers(id);
