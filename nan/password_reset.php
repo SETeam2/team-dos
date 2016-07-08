@@ -1,3 +1,9 @@
+
+<?php
+session_name('teamdos');
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,31 +38,19 @@
             <div class="col-md-6 col-md-offset-3">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
+                        <h3 class="panel-title">Reset your Password</h3>
                     </div>
+
                     <div class="panel-body">
-                        <form method="post" action="login.php">
+                        <form method="post" action="new_password.php">
                             <fieldset>
+                             	<input name="uid" type="hidden" value="<?php echo $_GET["uid"]; ?>">
+                                
                                 <div class="form-group">
-                                    <label>Email</label>
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus required>
+                                    <label>New Password</label>
+                                    <input class="form-control" placeholder="New Password" name="password" type="password" value="" required>
                                 </div>
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
-                                </div>
-                                <a href="request_password_reset.html"><p>Forgot your password?<p></a>
-
-                                <button type="submit" name="submit" class="btn btn-lg btn-success btn-block">Login</button>
-
-                                <div class="btn btn-block btn-lg btn-primary" data-scope = "public_profile,email" onclick='login();'>
-                                    <span class="fa fa-facebook"></span> Login with Facebook
-                                 </div>
-
-
-                                <div class="row border-top">
-                                </div>
-                                <a href="new_account.html" class="btn btn-lg btn-info btn-block">Create New Account</a>
+                                <button type="submit" name="submit" class="btn btn-lg btn-success btn-block">Reset</button>                             
                             </fieldset>
                         </form>
                     </div>
@@ -70,7 +64,6 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="lib/js/bootstrap.min.js"></script>
-    <script src="lib/fbapp/fb.js"></script>
 
 
 </body>
