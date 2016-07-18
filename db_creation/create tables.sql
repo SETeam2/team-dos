@@ -72,8 +72,22 @@ task_name varchar(128) not null,
 task_text text not null,
 created_by_developer int NOT NULL,
 created_at TIMESTAMP REFERENCES posts (created_at),
+priority varchar(12) NOT NULL,
+status varchar(12) NOT NULL,
+modified_at TIMESTAMP NOT NULL,
+assigned_to int NOT NULL REFERENCES project_developers(id),
 FOREIGN KEY (created_by_developer) REFERENCES posts(created_by),
 FOREIGN KEY (story_id) REFERENCES stories(id)
+);
+
+create table task_assignments
+(
+id int not null auto_increment,
+developer_id int,
+task_id int,
+primary key (id),
+FOREIGN KEY (developer_id) REFERENCES project_developers(id),
+FOREIGN KEY (task_id) REFERENCES tasks(id)
 );
 
 INSERT INTO projects ( name, password )
