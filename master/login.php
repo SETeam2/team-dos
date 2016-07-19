@@ -20,7 +20,7 @@ $password = $_POST["password"];
 $servername = "localhost";
 $db_username = "root";
 $db_password = "cs673";
-$db_name = "nan";
+$db_name = "master";
 
 // Create connection
 $conn = new mysqli($servername, $db_username, $db_password, $db_name);
@@ -43,7 +43,7 @@ if ($row["password"] === $password) {
     // Set session variables
     $_SESSION['user']['id']    = $row["id"];
     $_SESSION['user']['name']  = $row["username"];
-    $_SESSION['user']['email'] = $row["email"];
+    $_SESSION['user']['email'] = $email;
     
     // Go to tracker page
     header ("Location: main.php");

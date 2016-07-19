@@ -404,6 +404,7 @@ textarea {
         
         <form id="submitForm" method="post" action="">
             <input id="chatText" name="chatText"  maxlength="255" rows=2/>
+            <input type="hidden" id="projectID" name="projectID"/>
             <input type="submit" class="blueButton" value="Submit" />
         </form>
         
@@ -418,11 +419,26 @@ textarea {
 <script src="js/jScrollPane/jScrollPane.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
-    
-    // Run the init method on document ready:
-    chat.init();
-    
-});
+
+        // Run the init method on document ready:
+        var url = window.location.href.split('?')[1];
+        var params = getQueryParams(url);
+        var projectID = params.projectID;
+        chat.init(projectID);  
+    });
+
+    function getQueryParams(qs) {
+
+        var params = {},
+            tokens,
+            re = /[?&]?([^=]+)=([^&]*)/g;
+
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+        return params;
+    }
+
 
 var chat = {
     
@@ -435,7 +451,12 @@ var chat = {
     
     // Init binds event listeners and sets up timers:
     
-    init : function(){
+    init : function(projectid){
+
+        if(projectid){
+            chat.data.projectID = projectid;
+            $('#projectID').val(projectid);
+        }
         
         // Using the defaultText jQuery plugin, included at the bottom:
         $('#name').defaultText('Nickname');
@@ -503,18 +524,17 @@ var chat = {
                     id          : tempID,
                     author      : chat.data.name,
                     email       : chat.data.email,
+                    project_id  : chat.data.projectID,
                     text        : text.replace(/</g,'&lt;').replace(/>/g,'&gt;')
                 };
 
             // Using our addChatLine method to add the chat
             // to the screen immediately, without waiting for
-            // the AJAX request to complete:
-            
+            // the AJAX request to complete:            
             chat.addChatLine($.extend({},params));
             
             // Using our tzPOST wrapper method to send the chat
-            // via a POST AJAX request:
-            
+            // via a POST AJAX request:            
             $.tzPOST('submitChat',$(this).serialize(),function(r){
                 working = false;
                 
@@ -685,7 +705,7 @@ var chat = {
     // (since lastID), and adds them to the page.
     
     getChats : function(callback){
-        $.tzGET('getChats',{lastID: chat.data.lastID},function(r){
+        $.tzGET('getChats',{lastID: chat.data.lastID, projectID: chat.data.projectID},function(r){
             
             for(var i=0;i<r.chats.length;i++){
                 chat.addChatLine(r.chats[i]);

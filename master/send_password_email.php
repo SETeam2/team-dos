@@ -21,7 +21,7 @@ if (isset($_POST["email"]) ) {
 	$servername = "localhost";
 	$db_username = "root";
 	$db_password = "cs673";
-	$db_name = "nan";
+	$db_name = "master";
 
 	// Create connection
 	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
@@ -42,7 +42,7 @@ if (isset($_POST["email"]) ) {
 	if (isset($row["id"])) {		
 		$to = $email;
 		
-		$url= "http://52.203.18.172/nan/password_reset.php?uid=".$row["id"];
+		$url= "http://52.203.18.172/master/password_reset.php?uid=".$row["id"];
 		$txt = "We received a request to reset the password associated with this e-mail address. If you made this request, please follow the instructions below.
 		                  
 	Click the link below to reset your password using our unsecure server:

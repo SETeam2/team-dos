@@ -54,7 +54,7 @@ if (! isset ( $_SESSION['user']['name'] )) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="welcome.html">team DOS</a>
+                <a class="navbar-brand" href="main.php">team DOS</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -96,23 +96,60 @@ echo $_SESSION['user']['name'] ;
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
-                        <a href="main.php"><i class="fa fa-fw fa-dashboard"></i> My Dashboard</a>
-                    </li>
 
 
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-edit"></i> My Projects <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo">
-                            <li>
-                                <a href="project1.html">Project 1 </a>
-                            </li>
-                            <li>
-                                <a href="project2.html">Project 2</a>
-                            </li>
-                        </ul>
-                    </li>
+                <?php
+                    if(isset($_GET['projectID'])){
+                        echo '<li><a href="http://52.203.18.172/master/chat.php">Public Chats</a></li>';
+                    }else{
+                        echo '<li class="active"><a href="http://52.203.18.172/master/chat.php">Public Chats</a></li>';
+                    }
+                ?>
+                       
+                    
+<?php
 
+// Open connection to mysql
+$servername = "localhost";
+$db_username = "root";
+$db_password = "cs673";
+$db_name = "master";
+
+// Create connection
+$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$useremail = $_SESSION['user']['email'];
+
+$sql_query = "SELECT projects.id,users.username,users.email,users.last_activity,projects.name  
+                    FROM project_developers  
+                    JOIN users  ON project_developers.user_id=users.id  JOIN projects  ON project_developers.project_id=projects.id  
+                    where users.email='$useremail'";
+if ($result = $conn->query($sql_query)) {
+    if ($result->num_rows > 0) {
+
+                        
+        while ($row = $result->fetch_array()) {
+
+            if($_GET['projectID'] == $row["id"]){
+                echo '<li class="active"><a href="?projectID='.$row["id"].'">'.$row["name"].'</a></li>';
+            }else{
+                echo '<li><a href="?projectID='.$row["id"].'">'.$row["name"].'</a></li>';
+            }
+     
+        }
+   
+    }
+}
+
+$conn->close();
+?>
+                    
+                   
   
                 </ul>
             </div>
@@ -134,7 +171,13 @@ echo $_SESSION['user']['name'] ;
                 <!-- /.row --> 
 
             <div id="my-chat"> 
-                <iframe src="chat/chat.html" frameBorder="0" width="100%" height="632px" class="myIframe"></iframe> 
+                <iframe src=<?php 
+                    if(isset($_GET['projectID'])){
+                        echo "chat/chat.html?projectID=".$_GET['projectID'];
+                    }else{
+                        echo "chat/chat.html?projectID=0";
+                    }                    
+                ?> frameBorder="0" width="100%" height="632px" class="myIframe"></iframe> 
             </div>
             
             </div>

@@ -54,7 +54,7 @@ if (! isset ( $_SESSION['user']['name'] )) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="welcome.html">team DOS</a>
+                <a class="navbar-brand" href="#">team DOS</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -100,15 +100,21 @@ echo $_SESSION['user']['name'] ;
                         <a href="main.php"><i class="fa fa-fw fa-dashboard"></i> My Dashboard</a>
                     </li>
 
+                    <li>
+                        <a href="../patrick/pat_2/login45.php"><i class="fa fa-fw fa-tasks"></i> Task</a>
+                    </li>
+                    <li>
+                        <a href="../albert/issue_tracker.html"><i class="fa fa-fw fa-bell"></i> Issue Tracker</a>
+                    </li>
 
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-edit"></i> My Projects <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo">
                             <li>
-                                <a href="project1.html">Project 1 </a>
+                                <a href="#">Project 1 </a>
                             </li>
                             <li>
-                                <a href="project2.html">Project 2</a>
+                                <a href="#">Project 2</a>
                             </li>
                         </ul>
                     </li>
@@ -148,7 +154,7 @@ echo $_SESSION['user']['name'] ;
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">16</div>
-                                        <div>Unread</div>
+                                        <div>Messages</div>
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +180,7 @@ echo $_SESSION['user']['name'] ;
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
+                            <a href="../patrick/pat_2/login45.php">
                                 <div class="panel-footer">
                                     <span class="pull-left">View Details</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -192,7 +198,7 @@ echo $_SESSION['user']['name'] ;
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">1</div>
-                                        <div>Alert</div>
+                                        <div>Issues</div>
                                     </div>
                                 </div>
                             </div>
@@ -235,9 +241,7 @@ echo $_SESSION['user']['name'] ;
                 </h1>
 
                 <div class="well">
-                    <p>John Felix Anthony Cena Jr. (/ˈsiːnə/; born April 23, 1977) is an American professional wrestler, rapper, actor and reality television show host signed to WWE.
-
-Cena started his pro wrestling career in 1999 with Ultimate Pro Wrestling (UPW), and won the UPW Heavyweight Championship the following year.[9] Cena signed a developmental contract with the World Wrestling Federation (WWF, later renamed to WWE) in 2001, debuting on the WWE main roster in 2002. From a generic character in 2002, Cena morphed into an arrogant and edgy rapper for the time period of 2002-2003.[10][11] Cena later transitioned to his current character, which he describes as a "goody-two shoes Superman".[12] However, Cena has been labeled as the "most polarizing pro wrestler ever" as his character has many supporters and many detractors.[13] In 2015, WWE credited Cena as being the "face of WWE" from 2004,[14] while in 2012, IGN described Cena as WWE's franchise player since 2005.[15]</p>
+                    <p></p>
                 </div>
                                           <button type="submit" class="btn btn-primary pull-right" style="margin-left:10px"> Modify </button>
                                 <button type="submit" class="btn btn-primary pull-right"> Details </button>

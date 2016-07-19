@@ -6,7 +6,7 @@ $dbOptions = array(
 	'db_host' => 'localhost',
 	'db_user' => 'root',
 	'db_pass' => 'cs673',
-	'db_name' => 'nan'
+	'db_name' => 'master'
 );
 
 /* Database Config End */
@@ -54,7 +54,7 @@ try{
 		break;
 		
 		case 'submitChat':
-			$response = Chat::submitChat($_POST['chatText']);
+			$response = Chat::submitChat($_POST['chatText'],$_POST['projectID']);
 		break;
 		
 		case 'getUsers':
@@ -62,7 +62,7 @@ try{
 		break;
 		
 		case 'getChats':
-			$response = Chat::getChats($_GET['lastID']);
+			$response = Chat::getChats($_GET['lastID'],$_GET['projectID']);
 		break;
 		
 		default:

@@ -58,7 +58,7 @@ class Chat{
 		return array('status' => 1);
 	}
 	
-	public static function submitChat($chatText){
+	public static function submitChat($chatText,$projectID){
 		if(!$_SESSION['user']){
 			throw new Exception('You are not logged in');
 		}
@@ -66,12 +66,22 @@ class Chat{
 		if(!$chatText){
 			throw new Exception('You haven\' entered a chat message.');
 		}
+		if(isset($projectID)){
+			$chat = new ChatLine(array(
+				'author'	=> $_SESSION['user']['name'],
+				'email'	    => $_SESSION['user']['email'],
+				'text'		=> $chatText,
+				'project_id'=> $projectID
+			));
+		}else{
+			$chat = new ChatLine(array(
+				'author'	=> $_SESSION['user']['name'],
+				'email'	    => $_SESSION['user']['email'],
+				'text'		=> $chatText
+			));
+		}
 	
-		$chat = new ChatLine(array(
-			'author'	=> $_SESSION['user']['name'],
-			'email'	=> $_SESSION['user']['email'],
-			'text'		=> $chatText
-		));
+
 	
 		// The save method returns a MySQLi object
 		$insertID = $chat->save()->insert_id;
@@ -107,10 +117,16 @@ class Chat{
 		);
 	}
 	
-	public static function getChats($lastID){
-		$lastID = (int)$lastID;
-	
-		$result = DB::query('SELECT * FROM chat_logs WHERE id > '.$lastID.' ORDER BY id ASC');
+	public static function getChats($lastID,$projectID){
+		$lastID    = (int)$lastID;
+
+		if(isset($projectID)){
+			$projectID = (int)$projectID;	
+			
+		}else{
+			$projectID = 0;	
+		}		
+		$result = DB::query('SELECT * FROM chat_logs WHERE id > '.$lastID.' AND project_id = '.$projectID.' ORDER BY id ASC');
 	
 		$chats = array();
 		while($chat = $result->fetch_object()){

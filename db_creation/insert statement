@@ -1,0 +1,30 @@
+Nan Sun <nsun1989@gmail.com>,
+Patrick Querido <pquerido@bu.edu>,
+Philippe Bouzy <pbouzy@gmail.com>,
+
+insert into users (username, password, email, last_activity) values ("Philippe Bouzy", "12345", "pbouzy@gmail.com", now());
+
+insert into projects (name) values ("teamdos-chat");
+insert into projects (name) values ("teamdos-project");
+insert into projects (name) values ("teamdos-story");
+
+
+insert into project_developers (user_id, project_id) values (1,1);
+insert into project_developers (user_id, project_id) values (6,1);
+insert into project_developers (user_id, project_id) values (5,1);
+insert into project_developers (user_id, project_id) values (8,1);
+insert into project_developers (user_id, project_id) values (9,1);
+insert into project_developers (user_id, project_id) values (13,1);
+insert into project_developers (user_id, project_id) values (14,1);
+insert into project_developers (user_id, project_id) values (15,1);
+insert into project_developers (user_id, project_id) values (1,2);
+
+SELECT users.username,users.email,users.last_activity,projects.name
+FROM project_developers
+JOIN users
+ON project_developers.user_id=users.id
+JOIN projects
+ON project_developers.project_id=projects.id
+where users.id=1;
+
+select * from 

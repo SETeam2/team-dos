@@ -22,7 +22,7 @@ if (isset($_POST["uid"]) && isset($_POST["password"])) {
 	$servername = "localhost";
 	$db_username = "root";
 	$db_password = "cs673";
-	$db_name = "nan";
+	$db_name = "master";
 
 	// Create connection
 	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
