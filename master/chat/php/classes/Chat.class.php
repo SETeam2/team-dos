@@ -126,7 +126,8 @@ class Chat{
 		}else{
 			$projectID = 0;	
 		}		
-		$result = DB::query('SELECT * FROM chat_logs WHERE id > '.$lastID.' AND project_id = '.$projectID.' ORDER BY id ASC');
+
+		$result = DB::query('SELECT * FROM ( SELECT * FROM chat_logs WHERE id > '.$lastID.' AND project_id = '.$projectID.' ORDER BY id DESC LIMIT 20 ) sub ORDER BY id ASC');
 	
 		$chats = array();
 		while($chat = $result->fetch_object()){
