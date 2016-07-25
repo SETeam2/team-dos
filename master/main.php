@@ -1,9 +1,18 @@
 <?php
 session_name('teamdos');
 session_start ();
+if (! isset($_SESSION['LAST_ACTIVITY']) || (time() - $_SESSION['LAST_ACTIVITY'] > 3600)) {
+    $_SESSION = array();
+    unset($_SESSION);
+    session_unset();     
+    session_destroy(); 
+    header ( "Location: login.html" );
+}
+
 if (! isset ( $_SESSION['user']['name'] )) {
     header ( "Location: login.html" ); // Redirect the user
 }
+$_SESSION['LAST_ACTIVITY'] = time(); 
 ?>
 
 <!DOCTYPE html>
@@ -59,34 +68,13 @@ if (! isset ( $_SESSION['user']['name'] )) {
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li><a href="chat.php"><i class="fa fa-comments"></i></a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown">
-                        <li>
-                            <a href="#">Project 1 <span class="label label-danger">Due Tomorrow</span></a>
-                        </li>
-                        
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">View All</a>
-                        </li>
-                    </ul>
-                </li>
+ 
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php
 echo $_SESSION['user']['name'] ;
 ?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
+                        
                         <li>
                             <a id="logout" href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
@@ -97,29 +85,59 @@ echo $_SESSION['user']['name'] ;
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
-                        <a href="main.php"><i class="fa fa-fw fa-dashboard"></i> My Dashboard</a>
+                        <a href="main.php"><i class="fa fa-fw fa-dashboard"></i> Main Dashboard</a>
                     </li>
 
                     <li>
                         <a href="../patrick/pat_2/login45.php"><i class="fa fa-fw fa-tasks"></i> Task</a>
                     </li>
                     <li>
-                        <a href="../albert/issue_tracker.html"><i class="fa fa-fw fa-bell"></i> Issue Tracker</a>
+                        <a href="issues/issue_tracker_test.php"><i class="fa fa-fw fa-bell"></i> Issue Tracker</a>
+                    </li>
+                    <li>
+                        <a href="file_sharing.php"><i class="fa fa-fw fa-upload"></i> Shared Resources</a>
                     </li>
 
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-edit"></i> My Projects <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-comments"></i> Group Chats <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo">
-                            <li>
-                                <a href="#">Project 1 </a>
-                            </li>
-                            <li>
-                                <a href="#">Project 2</a>
-                            </li>
-                        </ul>
-                    </li>
+<?php
 
-  
+// Open connection to mysql
+$servername = "localhost";
+$db_username = "root";
+$db_password = "cs673";
+$db_name = "master";
+
+// Create connection
+$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$useremail = $_SESSION['user']['email'];
+
+$sql_select_projects_id = "SELECT projects.id, users.id as user_id, users.username,users.email,users.last_activity,projects.name  
+                    FROM project_developers  
+                    JOIN users  ON project_developers.user_id=users.id  JOIN projects  ON project_developers.project_id=projects.id  
+                    where users.email='$useremail'";
+
+if ($result = $conn->query($sql_select_projects_id)) {
+    if ($result->num_rows > 0) {                        
+        while ($row = $result->fetch_array()) {
+            echo '<li><a href="chat.php?projectID='.$row["id"].'">'.$row["name"].'</a></li>';
+        }   
+    }
+}
+
+$conn->close();
+?>
+
+                           
+                        </ul>
+                    </li>  
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -133,7 +151,7 @@ echo $_SESSION['user']['name'] ;
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            My Dashboard <small> Overview </small>
+                            Main Dashboard <small> Overview </small>
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
@@ -197,7 +215,38 @@ echo $_SESSION['user']['name'] ;
                                         <i class="fa fa fa-bell fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">1</div>
+                                        <div class="huge">
+                                            <?php
+
+// Open connection to mysql
+$servername = "localhost";
+$db_username = "root";
+$db_password = "cs673";
+$db_name = "master";
+
+// Create connection
+$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$useremail = $_SESSION['user']['email'];
+
+$sql_select_projects_id = "select COUNT(id) as count from issues where status <> 'Completed'";
+
+if ($result = $conn->query($sql_select_projects_id)) {
+    if ($result->num_rows > 0) {                        
+        while ($row = $result->fetch_array()) {
+            echo $row["count"];
+        }   
+    }
+}
+
+$conn->close();
+?>
+                                        </div>
                                         <div>Issues</div>
                                     </div>
                                 </div>
@@ -235,17 +284,69 @@ echo $_SESSION['user']['name'] ;
                     </div>
 
                 </div>
-                <!-- /.row -->
+
+                <form method="post" action="join_project.php">
+   <!-- /.row -->
                 <h1 class="page-header">
-                    My Profile
+                    Join a project
                 </h1>
 
                 <div class="well">
-                    <p></p>
-                </div>
-                                          <button type="submit" class="btn btn-primary pull-right" style="margin-left:10px"> Modify </button>
-                                <button type="submit" class="btn btn-primary pull-right"> Details </button>
+                <select name="projecid" class="form-control">
+  <option value='0'>Select a project to Join</option>
 
+
+<?php
+
+// Open connection to mysql
+$servername = "localhost";
+$db_username = "root";
+$db_password = "cs673";
+$db_name = "master";
+
+// Create connection
+$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$useremail = $_SESSION['user']['email'];
+
+$sql_query = "SELECT * FROM projects";
+
+if ($result = $conn->query($sql_query)) {
+    if ($result->num_rows > 0) {                        
+        while ($row = $result->fetch_array()) {
+            echo '<option value='.$row["id"].'>'.$row["name"].'</option>';
+        }   
+    }
+}
+
+$conn->close();
+?>
+</select>
+                </div>
+                <button type="submit" class="btn btn-primary pull-right"> Join Project</button>
+                </form>
+ 
+
+ <form method="post" action="create_project.php">
+   <!-- /.row -->
+                <h1 class="page-header">
+                    Create a project
+                </h1>
+
+                <div class="well">
+                <input class="form-control" placeholder="Project Name" name="project_name" type="text" required>
+                </div>
+                <button type="submit" class="btn btn-primary pull-right"> Create Project</button>
+                </form>
+
+             
+    <!-- /.row -->
+                
             </div>
             <!-- /.container-fluid -->
 

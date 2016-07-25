@@ -405,6 +405,8 @@ textarea {
         <form id="submitForm" method="post" action="">
             <input id="chatText" name="chatText"  maxlength="255" rows=2/>
             <input type="hidden" id="projectID" name="projectID"/>
+            <input type="hidden" id="fromID" name="fromID"/>
+            <input type="hidden" id="toID" name="toID"/>
             <input type="submit" class="blueButton" value="Submit" />
         </form>
         
@@ -424,7 +426,9 @@ textarea {
         var url = window.location.href.split('?')[1];
         var params = getQueryParams(url);
         var projectID = params.projectID;
-        chat.init(projectID);  
+        var fromID = params.fromID;
+        var toID = params.toID;
+        chat.init(projectID,fromID,toID);  
     });
 
     function getQueryParams(qs) {
@@ -451,11 +455,21 @@ var chat = {
     
     // Init binds event listeners and sets up timers:
     
-    init : function(projectid){
+    init : function(projectid,fromID,toID){
 
         if(projectid){
             chat.data.projectID = projectid;
             $('#projectID').val(projectid);
+        }
+
+        if(fromID){
+            chat.data.fromID = fromID;
+            $('#fromID').val(fromID);
+        }
+
+        if(toID){
+            chat.data.toID = toID;
+            $('#toID').val(toID);
         }
         
         // Using the defaultText jQuery plugin, included at the bottom:
@@ -525,6 +539,8 @@ var chat = {
                     author      : chat.data.name,
                     email       : chat.data.email,
                     project_id  : chat.data.projectID,
+                    from_id     : chat.data.fromID,
+                    to_id       : chat.data.toID,
                     text        : text.replace(/</g,'&lt;').replace(/>/g,'&gt;')
                 };
 
@@ -705,7 +721,7 @@ var chat = {
     // (since lastID), and adds them to the page.
     
     getChats : function(callback){
-        $.tzGET('getChats',{lastID: chat.data.lastID, projectID: chat.data.projectID},function(r){
+        $.tzGET('getChats',{lastID: chat.data.lastID, projectID: chat.data.projectID, fromID: chat.data.fromID, toID: chat.data.toID},function(r){
             
             for(var i=0;i<r.chats.length;i++){
                 chat.addChatLine(r.chats[i]);

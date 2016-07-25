@@ -58,7 +58,7 @@ class Chat{
 		return array('status' => 1);
 	}
 	
-	public static function submitChat($chatText,$projectID){
+	public static function submitChat($chatText,$projectID,$fromID,$toID){
 		if(!$_SESSION['user']){
 			throw new Exception('You are not logged in');
 		}
@@ -66,21 +66,15 @@ class Chat{
 		if(!$chatText){
 			throw new Exception('You haven\' entered a chat message.');
 		}
-		if(isset($projectID)){
-			$chat = new ChatLine(array(
-				'author'	=> $_SESSION['user']['name'],
-				'email'	    => $_SESSION['user']['email'],
-				'text'		=> $chatText,
-				'project_id'=> $projectID
-			));
-		}else{
-			$chat = new ChatLine(array(
-				'author'	=> $_SESSION['user']['name'],
-				'email'	    => $_SESSION['user']['email'],
-				'text'		=> $chatText
-			));
-		}
 	
+		$chat = new ChatLine(array(
+			'author'	=> $_SESSION['user']['name'],
+			'email'	    => $_SESSION['user']['email'],
+			'text'		=> $chatText,
+			'project_id'=> $projectID,
+			'from_id'   => $fromID,
+			'to_id'     => $toID
+		));
 
 	
 		// The save method returns a MySQLi object
@@ -117,7 +111,7 @@ class Chat{
 		);
 	}
 	
-	public static function getChats($lastID,$projectID){
+	public static function getChats($lastID,$projectID,$fromID,$toID){
 		$lastID    = (int)$lastID;
 
 		if(isset($projectID)){
@@ -125,9 +119,19 @@ class Chat{
 			
 		}else{
 			$projectID = 0;	
-		}		
+		}
 
-		$result = DB::query('SELECT * FROM ( SELECT * FROM chat_logs WHERE id > '.$lastID.' AND project_id = '.$projectID.' ORDER BY id DESC LIMIT 20 ) sub ORDER BY id ASC');
+		if (isset($fromID) && isset($toID)){
+			$fromID = (int)$fromID;
+			$toID   = (int)$toID;
+
+			$result = DB::query('SELECT * FROM ( SELECT * FROM chat_logs WHERE id > '.$lastID.' AND (from_id = '.$fromID.' OR from_id = '.$toID.')
+				 AND (to_id = '.$fromID.' OR to_id = '.$toID.')
+				ORDER BY id DESC LIMIT 20 ) sub ORDER BY id ASC');
+
+		}else{
+			$result = DB::query('SELECT * FROM ( SELECT * FROM chat_logs WHERE id > '.$lastID.' AND project_id = '.$projectID.' ORDER BY id DESC LIMIT 20 ) sub ORDER BY id ASC');
+		}
 	
 		$chats = array();
 		while($chat = $result->fetch_object()){

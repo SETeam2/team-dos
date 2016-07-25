@@ -1,7 +1,6 @@
 <?php
 session_name('teamdos');
 session_start ();
-
 if (! isset($_SESSION['LAST_ACTIVITY']) || (time() - $_SESSION['LAST_ACTIVITY'] > 3600)) {
     $_SESSION = array();
     unset($_SESSION);
@@ -69,12 +68,13 @@ $_SESSION['LAST_ACTIVITY'] = time();
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li><a href="chat.php"><i class="fa fa-comments"></i></a></li>
-                
+ 
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php
 echo $_SESSION['user']['name'] ;
 ?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
+                        
                         <li>
                             <a id="logout" href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                         </li>
@@ -84,17 +84,23 @@ echo $_SESSION['user']['name'] ;
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="main.php"><i class="fa fa-fw fa-dashboard"></i> Main Dashboard</a>
+                    </li>
 
+                    <li>
+                        <a href="../patrick/pat_2/login45.php"><i class="fa fa-fw fa-tasks"></i> Task</a>
+                    </li>
+                    <li>
+                        <a href="issues/issue_tracker_test.php"><i class="fa fa-fw fa-bell"></i> Issue Tracker</a>
+                    </li>
+                    <li class="active">
+                        <a href="file_sharing.php"><i class="fa fa-fw fa-upload"></i> Shared Resources</a>
+                    </li>
 
-                <?php
-                    if(isset($_GET['projectID'])){
-                        echo '<li><a href="http://52.203.18.172/master/chat.php"><i class="fa fa-wechat"></i>  Public Chats</a></li>';
-                    }else{
-                        echo '<li class="active"><a href="http://52.203.18.172/master/chat.php"><i class="fa fa-wechat"></i>  Public Chats</a></li>';
-                    }
-                ?>
-                       
-                    
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-comments"></i> Group Chats <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo">
 <?php
 
 // Open connection to mysql
@@ -113,60 +119,25 @@ if ($conn->connect_error) {
 
 $useremail = $_SESSION['user']['email'];
 
-$sql_query = "SELECT projects.id, users.id as user_id, users.username,users.email,users.last_activity,projects.name  
+$sql_select_projects_id = "SELECT projects.id, users.id as user_id, users.username,users.email,users.last_activity,projects.name  
                     FROM project_developers  
                     JOIN users  ON project_developers.user_id=users.id  JOIN projects  ON project_developers.project_id=projects.id  
                     where users.email='$useremail'";
 
-if ($result = $conn->query($sql_query)) {
-    if ($result->num_rows > 0) {
-
-                        
+if ($result = $conn->query($sql_select_projects_id)) {
+    if ($result->num_rows > 0) {                        
         while ($row = $result->fetch_array()) {
-
-            if($_GET['projectID'] == $row["id"]){
-                echo '<li class="active"><a href="?projectID='.$row["id"].'"><i class="fa fa-users"></i> Group '.$row["name"].'</a></li>';
-
-
-
-                $userid = $row['user_id'];
-
-                $sql_user = "SELECT users.id,users.username  
-                                FROM project_developers  
-                                JOIN users  ON project_developers.user_id=users.id  JOIN projects  ON project_developers.project_id=projects.id  
-                                where project_developers.project_id='".$_GET['projectID']."'
-                                AND users.email<>'$useremail'";
-
-                if ($result2 = $conn->query($sql_user)) {
-                    while ($row2 = $result2->fetch_array()) {
-
-                        
-                        if($_GET['toID'] == $row2["id"]){
-                            echo '<li class="active"><a href="?projectID='.$row["id"].'&fromID='.$userid.'&toID='.$row2["id"].'">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i>  '.$row2["username"].'</a></li>';
-                        }else{
-                            echo '<li ><a href="?projectID='.$row["id"].'&fromID='.$userid.'&toID='.$row2["id"].'">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i>  '.$row2["username"].'</a></li>';
-                        }
-                 
-                    }
-
-                }
-    
-
-
-
-            }else{
-                echo '<li><a href="?projectID='.$row["id"].'"><i class="fa fa-users"></i>  Group '.$row["name"].'</a></li>';
-            }
-     
-        }
-   
+            echo '<li><a href="chat.php?projectID='.$row["id"].'">'.$row["name"].'</a></li>';
+        }   
     }
 }
 
 $conn->close();
 ?>
-                    
 
+                           
+                        </ul>
+                    </li>  
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -176,34 +147,22 @@ $conn->close();
 
             <div class="container-fluid">
 
+
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                           Chats <small>  </small>
+                           File Sharing <small>  </small>
                         </h1>    
                     </div>
                 </div>
                 <!-- /.row --> 
 
-            <div id="my-chat"> 
-                <iframe src=<?php 
-                    $url = "chat/chat.html";
-                    if(isset($_GET['projectID'])){
-                        $url .=  "?projectID=".$_GET['projectID'];
-                    }else{
-                        $url .=  "?projectID=0";
-                    }
-                    if(isset($_GET['fromID'])){
-                        $url .=  "&fromID=".$_GET['fromID'];
-                    }
-                    if(isset($_GET['toID'])){
-                        $url .=  "&toID=".$_GET['toID'];
-                    } 
-                    echo $url;               
-                ?> frameBorder="0" width="100%" height="632px" class="myIframe"></iframe> 
-            </div>
-            
+            <div> 
+                <iframe src="file_sharing/uploading/view.php" frameBorder="0" width="100%" height="632px" class="myIframe"></iframe> 
+            </div>         
+   
+                
             </div>
             <!-- /.container-fluid -->
 
@@ -224,12 +183,8 @@ $conn->close();
     <script src="lib/js/plugins/morris/morris.min.js"></script>
     <script src="lib/js/plugins/morris/morris-data.js"></script>
     
-
     
     <script type="text/javascript">
-        $(window).load(function() {
-            $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-        });
         $("#logout").click(function(){
             var exit = confirm("Are you sure you want to leave?");
             if(exit==true){window.location = 'logout.php';}      

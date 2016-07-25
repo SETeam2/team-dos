@@ -54,7 +54,7 @@ try{
 		break;
 		
 		case 'submitChat':
-			$response = Chat::submitChat($_POST['chatText'],$_POST['projectID']);
+			$response = Chat::submitChat($_POST['chatText'],$_POST['projectID'],$_POST['fromID'],$_POST['toID']);
 		break;
 		
 		case 'getUsers':
@@ -62,7 +62,7 @@ try{
 		break;
 		
 		case 'getChats':
-			$response = Chat::getChats($_GET['lastID'],$_GET['projectID']);
+			$response = Chat::getChats($_GET['lastID'],$_GET['projectID'],$_GET['fromID'],$_GET['toID']);
 		break;
 		
 		default:

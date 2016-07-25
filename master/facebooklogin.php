@@ -1,17 +1,4 @@
-<?php
-session_name('teamdos');
-session_start ();
 
-
-if (isset($_GET['username'])) {
-	$_SESSION['user']['name']  = $_GET['username'];
-	$_SESSION['user']['email'] = $_GET['email'];
-	header ( "Location: main.php" );
-}else{
-    header ( "Location: login.html" );
-}
-
-?>
 
 
 <?php
@@ -36,10 +23,13 @@ if ($conn->connect_error) {
 	$useremail = $_GET['email'];
 
 $query_info = "SELECT id, username, password FROM users WHERE email = '$useremail' LIMIT 1";
-
-if ($conn->query($query_info)->num_rows > 0) {
-	$_SESSION['user']['name']  = $_GET['username'];
-	$_SESSION['user']['email'] = $_GET['email'];
+$result = $conn->query($query_info);
+if ($result->num_rows > 0) {
+	$row = $result->fetch_assoc();
+	$_SESSION['user']['id']    = $row['id'];
+	$_SESSION['user']['name']  = $row['username'];
+	$_SESSION['user']['email'] = $useremail;
+	$_SESSION['LAST_ACTIVITY'] = time(); 
 	header ( "Location: main.php" );
 
 } else {
@@ -47,9 +37,21 @@ if ($conn->query($query_info)->num_rows > 0) {
 	$sql = "INSERT INTO users (email, password, username) VALUES ('$useremail', 'facebook', '$username')";
 
 	if ($conn->query($sql) === TRUE) {
-		$_SESSION['user']['name']  = $_GET['username'];
-		$_SESSION['user']['email'] = $_GET['email'];
-		header ( "Location: main.php" );
+		$query_select = "SELECT id, username, password FROM users WHERE email = '$useremail' LIMIT 1";
+
+		$result2 = $conn->query($query_select);
+
+		if ($result2->num_rows > 0) {
+			$row2 = $result2->fetch_assoc();
+			$_SESSION['user']['id']    = $row2['id'];
+			$_SESSION['user']['name']  = $row2['username'];
+			$_SESSION['user']['email'] = $useremail;
+			$_SESSION['LAST_ACTIVITY'] = time(); 
+			header ( "Location: main.php" );
+		}else{
+			header ( "Location: login.html" );
+		}
+		
 
 	} else {
 		header ( "Location: login.html" );

@@ -13,14 +13,14 @@ session_start();
 <body>
 <?php
 // variables
-$email    = $_POST["email"];
+$project    = $_POST["project"];
 $password = $_POST["password"];
 
 // Open connection to mysql
 $servername = "localhost";
 $db_username = "root";
 $db_password = "cs673";
-$db_name = "master";
+$db_name = "tracker_database";
 
 // Create connection
 $conn = new mysqli($servername, $db_username, $db_password, $db_name);
@@ -31,7 +31,7 @@ if ($conn->connect_error) {
 }
 
 // Check if email password combination are correct
-$query_info = "SELECT id, username, password FROM users WHERE email = '$email' LIMIT 1";
+$query_info = "SELECT * FROM projects WHERE name = '$project' LIMIT 1";
 $result = $conn->query($query_info);
 
 // fetch associative array
@@ -39,25 +39,26 @@ $row = $result->fetch_assoc();
 
 // If email and password combination are correct
 if ($row["password"] === $password) {
-    
+    echo "Success! Added to project. \n";
     // Set session variables
-    $_SESSION['user']['id']    = $row["id"];
-    $_SESSION['user']['name']  = $row["username"];
-    $_SESSION['user']['email'] = $email;
-    $_SESSION['LAST_ACTIVITY'] = time(); 
+    // $_SESSION['user']['id']    = $row["id"];
+    // $_SESSION['user']['name']  = $row["username"];
+    // $_SESSION['user']['email'] = $row["email"];
     
     // Go to tracker page
-    header ("Location: main.php");
+    // TODO: go to success page
+    // header ("Location: main.php");
 
 } else {
     // email and password are not correct
-    echo "Email and password combination are not correct. Please go back and try again.";
+    echo "Project name and/or password are not correct. Please try again.  ";
 }
 
 $conn->close();
 ?>
-<a href="index.php">
-<b>Back to Login<b></a>
+<br>
+<a href="project_join.html">
+<b>Back<b></a>
 
 </body>
 </html>
