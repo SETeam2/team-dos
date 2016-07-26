@@ -10,7 +10,7 @@ if (! isset ( $_SESSION['user']['name'] )) {
 
 $issueid = $_GET['issueid'];
 
-$comment_text = $_POST["comment_text"];
+$comment_text = addslashes($_POST["comment_text"]);
 
 // Open connection to mysql
 $servername = "localhost";

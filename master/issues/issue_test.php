@@ -36,7 +36,7 @@ $issue_data = $result->fetch_assoc();
 $issue_comments = $conn->query("SELECT * FROM issue_comments WHERE issue_id = $issueid");
 
 // get project users
-$get_users_query = "SELECT users.username, users.id FROM project_developers JOIN users ON project_developers.user_id=users.id JOIN projects ON project_developers.project_id=projects.id WHERE project_id=1";
+$get_users_query = "SELECT users.username, users.id FROM project_developers JOIN users ON project_developers.user_id=users.id JOIN projects ON project_developers.project_id=projects.id WHERE project_id='{$_SESSION["current_project"]}';";
 $get_user = $conn->query($get_users_query);
 
 // Get creator name
@@ -75,22 +75,6 @@ echo "<title>Issue #".$issue_data[id]."</title>";
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="../main.php"><?php echo $curr_project[name]; ?></a>
-			</div>
-			<ul class="nav navbar-nav">
-				<li><a href="#">Tasks</a></li>
-				<li><a href="#">Messages</a></li>
-				<li class="active"><a href="#">Issues</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#"><span class="glyphicon glyphicon-user"></span> <?php echo $_SESSION['user']['name']; ?></a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-			</ul>
-		</div>
-	</nav>
 
     <div class="container">
 

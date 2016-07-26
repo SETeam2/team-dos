@@ -92,15 +92,8 @@ echo $_SESSION['user']['name'] ;
                         <a href="../patrick/pat_2/login45.php"><i class="fa fa-fw fa-tasks"></i> Task</a>
                     </li>
                     <li>
-                        <a href="issues/issue_tracker_test.php"><i class="fa fa-fw fa-bell"></i> Issue Tracker</a>
-                    </li>
-                    <li>
-                        <a href="file_sharing.php"><i class="fa fa-fw fa-upload"></i> Shared Resources</a>
-                    </li>
-
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-comments"></i> Group Chats <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-bell"></i> Issue Tracker <i class="fa fa-fw fa-caret-down"></i></a>
+                         <ul id="demo">
 <?php
 
 // Open connection to mysql
@@ -122,12 +115,13 @@ $useremail = $_SESSION['user']['email'];
 $sql_select_projects_id = "SELECT projects.id, users.id as user_id, users.username,users.email,users.last_activity,projects.name  
                     FROM project_developers  
                     JOIN users  ON project_developers.user_id=users.id  JOIN projects  ON project_developers.project_id=projects.id  
-                    where users.email='$useremail'";
+                    where users.email='$useremail'
+                     ORDER BY projects.id; ";
 
 if ($result = $conn->query($sql_select_projects_id)) {
     if ($result->num_rows > 0) {                        
         while ($row = $result->fetch_array()) {
-            echo '<li><a href="chat.php?projectID='.$row["id"].'">'.$row["name"].'</a></li>';
+            echo '<li><a href="Issue_Tracker.php?projectID='.$row["id"].'">'.$row["name"].'</a></li>';
         }   
     }
 }
@@ -137,6 +131,14 @@ $conn->close();
 
                            
                         </ul>
+                    </li>
+                    <li>
+                        <a href="file_sharing.php"><i class="fa fa-fw fa-upload"></i> Shared Resources</a>
+                    </li>
+
+                    <li>
+                        <a href="chat.php" ><i class="fa fa-fw fa-comments"></i> Group Chats </a>
+                       
                     </li>  
                 </ul>
             </div>
@@ -232,9 +234,10 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+$userid    = $_SESSION['user']['id'];
 $useremail = $_SESSION['user']['email'];
 
-$sql_select_projects_id = "select COUNT(id) as count from issues where status <> 'Completed'";
+$sql_select_projects_id = "select COUNT(id) as count from issues where status <> 'Completed' AND assignee = '$userid'";
 
 if ($result = $conn->query($sql_select_projects_id)) {
     if ($result->num_rows > 0) {                        

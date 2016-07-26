@@ -116,7 +116,8 @@ $useremail = $_SESSION['user']['email'];
 $sql_query = "SELECT projects.id, users.id as user_id, users.username,users.email,users.last_activity,projects.name  
                     FROM project_developers  
                     JOIN users  ON project_developers.user_id=users.id  JOIN projects  ON project_developers.project_id=projects.id  
-                    where users.email='$useremail'";
+                    where users.email='$useremail'
+                    ORDER BY projects.id; ";
 
 if ($result = $conn->query($sql_query)) {
     if ($result->num_rows > 0) {

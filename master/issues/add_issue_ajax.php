@@ -8,10 +8,10 @@ if (! isset ( $_SESSION['user']['name'] )) {
     header ( "Location: issue_tracker_test.php" ); // Redirect if no issue posted
 } else {
 
-$title = addslashes($_POST["title"]);
-$priority = $_POST["priority"];
-$assignee = $_POST["assignee"];
-$description = addslashes($_POST["description"]);
+$title = $_POST['title'];
+$priority = $_POST['priority'];
+$assignee = $_POST['assignee'];
+$description = $_POST['description'];
 
 echo $title." ";
 echo $priority." ";

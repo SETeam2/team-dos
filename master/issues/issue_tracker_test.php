@@ -6,8 +6,8 @@ if (! isset ( $_SESSION['user']['name'] )) {
     header ( "Location: ../login.html" ); // Redirect the user
 }
 
-// Sample Session variables
-$_SESSION['current_project'] = 1;
+// Project GET variables
+$_SESSION['current_project'] = $_GET['projectID'] ;//$_GET['projectID']
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,44 +56,26 @@ if ($conn->connect_error) {
 }
 
 // query issue table
-$query_info = "SELECT * FROM issues WHERE id_project='{$_SESSION['current_project']}';";
+$query_info = "SELECT * FROM issues WHERE id_project='{$_GET['projectID']}';";
 $result = $conn->query($query_info);
 
 // query current project users
-$get_users_query = "SELECT users.username, users.id FROM project_developers JOIN users ON project_developers.user_id=users.id JOIN projects ON project_developers.project_id=projects.id WHERE project_id='{$_SESSION['current_project']}'";
+$get_users_query = "SELECT users.username, users.id FROM project_developers JOIN users ON project_developers.user_id=users.id JOIN projects ON project_developers.project_id=projects.id WHERE project_id='{$_GET['projectID']}'";
 $get_user = $conn->query($get_users_query);
 
 // query current project name
-$curr_project = $conn->query("SELECT * FROM projects WHERE id='{$_SESSION['current_project']}';")->fetch_assoc();
+$curr_project = $conn->query("SELECT * FROM projects WHERE id='{$_GET['projectID']}';")->fetch_assoc();
 
 ?>
 
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="../main.php"><?php echo $curr_project[name]; ?></a>
-			</div>
-			<ul class="nav navbar-nav">
-				<li><a href="#">Tasks</a></li>
-				<li><a href="#">Messages</a></li>
-				<li class="active"><a href="#">Issues</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#"><span class="glyphicon glyphicon-user"></span> <?php echo $_SESSION['user']['name']; ?></a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-			</ul>
-		</div>
-	</nav>
 
-	<div class="container">
+	<div class="container">		
 		<div class="page-header">
-			<h1>Issue Tracker</h1><br>
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
 				Create New Issue
 			</button>
 		</div>
-		
 		<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>

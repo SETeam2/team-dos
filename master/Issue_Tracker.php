@@ -53,7 +53,7 @@ $_SESSION['LAST_ACTIVITY'] = time();
 
     <div id="wrapper">
 
-              <!-- Navigation -->
+        <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -115,8 +115,8 @@ $useremail = $_SESSION['user']['email'];
 $sql_select_projects_id = "SELECT projects.id, users.id as user_id, users.username,users.email,users.last_activity,projects.name  
                     FROM project_developers  
                     JOIN users  ON project_developers.user_id=users.id  JOIN projects  ON project_developers.project_id=projects.id  
-                    where users.email='$useremail'
-                     ORDER BY projects.id; ";
+                    where users.email='$useremail' 
+                    ORDER BY projects.id; ";
 
 if ($result = $conn->query($sql_select_projects_id)) {
     if ($result->num_rows > 0) {                        
@@ -128,7 +128,6 @@ if ($result = $conn->query($sql_select_projects_id)) {
 
 $conn->close();
 ?>
-
                            
                         </ul>
                     </li>
@@ -149,21 +148,59 @@ $conn->close();
 
             <div class="container-fluid">
 
-
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                           File Sharing <small>  </small>
+                        <?php
+
+// Open connection to mysql
+$servername = "localhost";
+$db_username = "root";
+$db_password = "cs673";
+$db_name = "master";
+
+// Create connection
+$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$projectID = 0;
+if(isset($_GET['projectID'])){
+    $projectID = $_GET['projectID'];   
+}
+
+$sql_query = "SELECT * FROM projects WHERE id='$projectID' LIMIT 1";
+
+if ($result = $conn->query($sql_query)) {
+    if ($result->num_rows > 0) { 
+        $row = $result->fetch_array();
+        echo $row["name"];
+    }
+}
+
+$conn->close();
+?>
+                           Issue Tracker <small>  </small>
                         </h1>    
                     </div>
                 </div>
-                <!-- /.row --> 
 
-            <div> 
-                <iframe src="file_sharing/uploading/view.php" frameBorder="0" width="100%" height="632px" class="myIframe"></iframe> 
-            </div>         
-   
+            <div id="my-chat"> 
+                <iframe src=<?php 
+                    $url = "issues/issue_tracker_test.php";
+                    if(isset($_GET['projectID'])){
+                        $url .=  "?projectID=".$_GET['projectID'];
+                    }else{
+                        $url .=  "?projectID=0";
+                    }
+                    
+                    echo $url;               
+                ?> frameBorder="0" width="100%" height="800px" class="myIframe"></iframe> 
+            </div> 
                 
             </div>
             <!-- /.container-fluid -->

@@ -10,7 +10,7 @@ if (! isset ( $_SESSION['user']['name'] )) {
 
 $issueid = $_GET['issueid'];
 
-$title = $_POST["title"];
+$title = addslashes($_POST["title"]);
 $priority = $_POST["priority"];
 $status = $_POST["status"];
 $assignee = $_POST["assignee"];

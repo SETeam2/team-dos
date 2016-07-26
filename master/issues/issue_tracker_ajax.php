@@ -109,10 +109,11 @@ function ajaxFunction(){
    
    // Now get the value from user and pass it to
    // server script.
-   var age = document.getElementById('age').value;
-   var wpm = document.getElementById('wpm').value;
-   var sex = document.getElementById('sex').value;
-   var queryString = "?age=" + age ;
+   var title = document.getElementById('Title').value;
+   var priority = document.getElementById('Priority').value;
+   var assignee = document.getElementById('Assignee').value;
+   var description = document.getElementById('Description').value;
+   var queryString = "?title=" + age ;
    
    queryString +=  "&wpm=" + wpm + "&sex=" + sex;
    ajaxRequest.open("GET", "ajax-example.php" + queryString, true);
@@ -215,7 +216,7 @@ function ajaxFunction(){
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<input type="button" class="btn btn-primary" onclick='ajaxFunction()' value="Create Issue" </input>
+						<button type="button" class="btn btn-primary" >Create Issue</button>
 					</div>
 				</form>
 			</div>
