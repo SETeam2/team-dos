@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Team Dos</title>
+
+
+    <link href="lib/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="lib/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="lib/css/plugins/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+            <style>
+            html,body {
+                margin: 0px;
+                overflow: hidden;
+                font-family:arial;
+                width:100%;
+                height:100%;
+            }
+            h1{
+                margin:0;
+            }
+
+            a {
+            }
+            #canvas{
+                width:100%;
+                height:100%;
+                overflow: hidden;
+                position:absolute;
+                top:0;
+                left:0;            
+            }
+            .canvas-wrap{
+                position:absolute;
+                width:100%;
+                height:100%;
+                
+            }
+            div.canvas-content{
+                position:absolute;
+                text-align:center;
+            }
+            .container{
+                margin-top: 100px;
+            }
+        </style>
+
+</head>
+
+<body>
+    
+    <div class="canvas-content">
+    </div>
+    <div id="canvas" class="gradient"></div>
+        
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">New Accounts</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form method="post" action="new_account.php">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>User Name</label>
+                                    <input class="form-control" placeholder="user name" name="username" type="text" value="" required>
+                                </div>
+                                                          
+
+                                <button type="submit" name="submit" class="btn btn-lg btn-success btn-block">Create Account</button>
+
+                                <a href="index.php"><p>back to login<p></a>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="lib/js/jquery.js"></script>
+
+    <script src="lib/js/three.min.js"></script>
+  
+    <!-- Helpers -->
+    <script src="lib/js/projector.js"></script>
+    <script src="lib/js/canvas-renderer.js"></script>
+
+    <!-- Visualitzation adjustments -->
+    <script src="lib/js/3d-lines-animation.js"></script>
+    <script src="lib/js/color.js"></script>
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="lib/js/bootstrap.min.js"></script>
+    <script src="lib/fbapp/fb.js"></script>
+
+
+
+</body>
+
+</html>
+
