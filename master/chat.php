@@ -1,20 +1,4 @@
-<?php
-session_name('teamdos');
-session_start ();
-
-if (! isset($_SESSION['LAST_ACTIVITY']) || (time() - $_SESSION['LAST_ACTIVITY'] > 3600)) {
-    $_SESSION = array();
-    unset($_SESSION);
-    session_unset();     
-    session_destroy(); 
-    header ( "Location: login.html" );
-}
-
-if (! isset ( $_SESSION['user']['name'] )) {
-    header ( "Location: login.html" ); // Redirect the user
-}
-$_SESSION['LAST_ACTIVITY'] = time(); 
-?>
+<?php include('php_components/session_validation') ?>
 
 <!DOCTYPE html>
 <html lang="en">

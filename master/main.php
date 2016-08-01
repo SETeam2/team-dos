@@ -1,19 +1,4 @@
-<?php
-session_name('teamdos');
-session_start ();
-if (! isset($_SESSION['LAST_ACTIVITY']) || (time() - $_SESSION['LAST_ACTIVITY'] > 3600)) {
-    $_SESSION = array();
-    unset($_SESSION);
-    session_unset();     
-    session_destroy(); 
-    header ( "Location: login.html" );
-}
-
-if (! isset ( $_SESSION['user']['name'] )) {
-    header ( "Location: login.html" ); // Redirect the user
-}
-$_SESSION['LAST_ACTIVITY'] = time(); 
-?>
+<?php include('php_components/session_validation') ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,97 +38,7 @@ $_SESSION['LAST_ACTIVITY'] = time();
 
     <div id="wrapper">
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">team DOS</a>
-            </div>
-            <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li><a href="chat.php"><i class="fa fa-comments"></i></a></li>
- 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php
-echo $_SESSION['user']['name'] ;
-?> <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        
-                        <li>
-                            <a id="logout" href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav side-nav">
-                    <li class="active">
-                        <a href="main.php"><i class="fa fa-fw fa-dashboard"></i> Main Dashboard</a>
-                    </li>
-
-                    <li>
-                        <a href="../patrick/pat_2/login45.php"><i class="fa fa-fw fa-tasks"></i> Task</a>
-                    </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-bell"></i> Issue Tracker <i class="fa fa-fw fa-caret-down"></i></a>
-                         <ul id="demo">
-<?php
-
-// Open connection to mysql
-$servername = "localhost";
-$db_username = "root";
-$db_password = "cs673";
-$db_name = "master";
-
-// Create connection
-$conn = new mysqli($servername, $db_username, $db_password, $db_name);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$useremail = $_SESSION['user']['email'];
-
-$sql_select_projects_id = "SELECT projects.id, users.id as user_id, users.username,users.email,users.last_activity,projects.name  
-                    FROM project_developers  
-                    JOIN users  ON project_developers.user_id=users.id  JOIN projects  ON project_developers.project_id=projects.id  
-                    where users.email='$useremail'
-                     ORDER BY projects.id; ";
-
-if ($result = $conn->query($sql_select_projects_id)) {
-    if ($result->num_rows > 0) {                        
-        while ($row = $result->fetch_array()) {
-            echo '<li><a href="Issue_Tracker.php?projectID='.$row["id"].'">'.$row["name"].'</a></li>';
-        }   
-    }
-}
-
-$conn->close();
-?>
-
-                           
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="file_sharing.php"><i class="fa fa-fw fa-upload"></i> Shared Resources</a>
-                    </li>
-
-                    <li>
-                        <a href="chat.php" ><i class="fa fa-fw fa-comments"></i> Group Chats </a>
-                       
-                    </li>  
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </nav>
+        <?php include('php_components/navigation_bar.php') ?>
 
         <div id="page-wrapper">
 
@@ -153,13 +48,8 @@ $conn->close();
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Main Dashboard <small> Overview </small>
+                            My Dashboard
                         </h1>
-                        <ol class="breadcrumb">
-                            <li class="active">
-                                <i class="fa fa-dashboard"></i> Dashboard
-                            </li>
-                        </ol>
                     </div>
                 </div>
                 <!-- /.row -->
@@ -173,14 +63,13 @@ $conn->close();
                                         <i class="fa fa-comments fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">16</div>
                                         <div>Messages</div>
                                     </div>
                                 </div>
                             </div>
                             <a href="chat.php">
                                 <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-left">My messages</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
@@ -195,18 +84,12 @@ $conn->close();
                                         <i class="fa fa-tasks fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">12</div>
-                                        <div>Task</div>
+                                        <div class="huge"><?php include('queries/task_count') ?></div>
+                                        <div>Tasks</div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="../patrick/pat_2/login45.php">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
+                            <?php include('queries/generate_task_link') ?>
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -254,13 +137,7 @@ $conn->close();
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
+                            <?php include('queries/generate_issue_link') ?>
                         </div>
                     </div>
                 </div>
@@ -297,10 +174,10 @@ $useremail = $_SESSION['user']['email'];
 $sql_query = "SELECT * FROM projects";
 
 if ($result = $conn->query($sql_query)) {
-    if ($result->num_rows > 0) {                        
+    if ($result->num_rows > 0) {
         while ($row = $result->fetch_array()) {
             echo '<option value='.$row["id"].'>'.$row["name"].'</option>';
-        }   
+        }
     }
 }
 

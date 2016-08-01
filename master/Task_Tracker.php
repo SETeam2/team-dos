@@ -49,42 +49,46 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                           Issue Tracker <small>
-                                <?php
-                                $servername = "localhost";
-                                $db_username = "root";
-                                $db_password = "cs673";
-                                $db_name = "master";
+                        <?php
 
-                                $conn = new mysqli($servername, $db_username, $db_password, $db_name);
+// Open connection to mysql
+$servername = "localhost";
+$db_username = "root";
+$db_password = "cs673";
+$db_name = "master";
 
-                                if ($conn->connect_error) {
-                                    die("Connection failed: " . $conn->connect_error);
-                                }
+// Create connection
+$conn = new mysqli($servername, $db_username, $db_password, $db_name);
 
-                                $projectID = 0;
-                                if(isset($_GET['projectID'])){
-                                    $projectID = $_GET['projectID'];
-                                }
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-                                $sql_query = "SELECT * FROM projects WHERE id='$projectID' LIMIT 1";
+$projectID = 0;
+if(isset($_GET['projectID'])){
+    $projectID = $_GET['projectID'];   
+}
 
-                                if ($result = $conn->query($sql_query)) {
-                                    if ($result->num_rows > 0) {
-                                        $row = $result->fetch_array();
-                                        echo $row["name"];
-                                    }
-                                }
-                                $conn->close();
-                                ?>
-                            </small>
+$sql_query = "SELECT * FROM projects WHERE id='$projectID' LIMIT 1";
+
+if ($result = $conn->query($sql_query)) {
+    if ($result->num_rows > 0) { 
+        $row = $result->fetch_array();
+        echo $row["name"];
+    }
+}
+
+$conn->close();
+?>
+                           Task Tracker <small>  </small>
                         </h1>    
                     </div>
                 </div>
 
             <div id="my-chat"> 
                 <iframe src=<?php 
-                    $url = "issues/issue_tracker_test.php";
+                    $url = "issues/task_tracker_test.php";
                     if(isset($_GET['projectID'])){
                         $url .=  "?projectID=".$_GET['projectID'];
                     }else{
