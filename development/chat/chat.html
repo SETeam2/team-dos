@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Mysql chat test</title>
+
+<style type="text/css">
+    /* Main chat container */
+
+*:focus {
+    outline: none;
+}
+
+#chatContainer{
+    padding:15px;
+    position:relative;
+}
+
+/* Top Bar */
+
+/* Chats */
+
+
+#chatLineHolder{
+    height:500px;
+    width: 100%;
+    margin-bottom:20px;
+}
+
+.chat{    
+   
+    border-top:1px solid #D3D3D3;    
+    padding:8px 6px 4px 37px;
+    position:relative;
+}
+
+.chat:last-child{
+    margin-bottom:0;
+}
+
+.chat span{
+    text-shadow:1px 1px 0 #FFFFFF;
+    font-size:15px;
+}
+
+.chat .text{
+    color:#444444;
+    display:inline-block;
+    font-size:15px;
+    overflow:hidden;
+    vertical-align:top;
+    width:100%;
+}
+
+.chat .email{
+    background:url('http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?size=23') no-repeat;
+    left:7px;
+    position:absolute;
+    top:17px;
+}
+
+.chat img{
+    display:block;
+    visibility:hidden;
+}
+
+.chat .time{
+    position:absolute;
+    right:10px;
+    top:12px;
+    font-size:11px;
+}
+
+.chat .author{
+    margin-right:6px;
+    font-size:15px;
+}
+
+
+/* Chat User Area */
+
+
+
+/* Bottom Bar */
+
+
+#chatBottomBar{
+   
+    position:relative;
+    padding:0px;    
+}
+
+
+#chatContainer input{
+    background:url('../img/input_bg.jpg') repeat-x #dcdcdc;
+    height:26px;
+    font:13px/26px Calibri,Arial,sans-serif;
+    color:#777;
+    border:1px solid;
+    border-color:#c1c1c1 #eee #eee #c1c1c1;
+    text-shadow:1px 1px 0 #E4E4E4;
+    padding:0 5px;
+    margin-right:5px;
+    width:185px;
+    outline:none;
+}
+
+#submitForm{
+    display:none;
+}
+
+input#chatText{
+    /* The chat submit text field */
+    width:385px;
+}
+
+
+/* Overloading the default styles of jScrollPane */
+
+
+.jspVerticalBar{
+    background:none;
+    width:5px;
+}
+
+.jspTrack{
+    background-color:#202020;
+    width:3px;
+    right:-10px;
+}
+
+.jspDrag {
+    background:url('../img/slider.png') no-repeat;
+    width:20px;
+    left:-10px !important;
+    height:40px !important;
+    margin-top:-5px;
+}
+
+.jspDrag:hover{
+    background-position:left bottom;
+}
+
+
+/* Additional styles */
+
+
+a.logoutButton{
+    background-color:#bbb;
+    border:1px solid #eee !important;
+    color:#FFFFFF !important;
+    font-size:12px;
+    padding:5px 9px;
+    position:absolute;
+    right:10px;
+    text-shadow:1px 1px 0 #888;
+    top:7px;
+    
+    -moz-box-shadow:0 0 7px #888 inset;
+    -webkit-box-shadow:0 0 7px #888 inset;
+    box-shadow:0 0 7px #888 inset;
+}
+
+a.logoutButton:hover{
+    text-shadow:1px 1px 0 #888;
+    
+    -moz-box-shadow:0 0 7px #666 inset;
+    -webkit-box-shadow:0 0 7px #666 inset;
+    box-shadow:0 0 7px #666 inset;
+}
+
+#chatContainer .blueButton{
+    color:#516D7F !important;
+    display:inline-block;
+    font-size:13px;
+    height:29px;
+    text-align:center;
+    text-shadow:1px 1px 0 rgba(255, 255, 255, 0.4);
+    width:75px;
+    margin:0;
+    cursor:pointer;
+}
+
+#chatContainer .blueButton:hover{
+    background-position:left bottom;
+}
+
+p.noChats,
+
+.rounded{
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    border-radius:4px;
+}
+
+#chatErrorMessage{
+    width:100%;
+    top:0;
+    left:0;
+    position:fixed;
+    background-color:#ab0909;
+    border-bottom:1px solid #d32a2a;
+    font-size:23px;
+    padding:16px;
+    text-align:center;
+    color:#fff;
+    
+    text-shadow:1px 1px 0 #940f0f;
+}
+*{
+    margin:0;
+    padding:0;
+}
+
+body{
+    font:18px Calibri,Arial,sans-serif;
+}
+
+#footer{
+    background-color:#212121;
+    position:fixed;
+    width:100%;
+    height:70px;
+    bottom:0;
+    left:0;
+}
+
+a.tzine,a.tzine:visited{
+    background:url("../img/tzine.png") no-repeat right top;
+    border:none;
+    color:#FCFCFC;
+    font-size:12px;
+    height:70px;
+    left:50%;
+    line-height:31px;
+    margin:23px 0 0 110px;
+    position:absolute;
+    top:0;
+    width:290px;
+}
+
+.tri{
+    border-color:transparent transparent #212121;
+    border-style:solid;
+    border-width:20px 17px;
+    height:0;
+    left:50%;
+    margin:-40px 0 0 -400px;
+    position:absolute;
+    top:0;
+    width:0;
+}
+
+h1{
+    font-size:20px;
+    font-weight:normal;
+    left:50%;
+    margin-left:-400px;
+    padding:25px 0;
+    position:absolute;
+    width:480px;
+}
+
+a, a:visited {
+    text-decoration:none;
+    outline:none;
+    border-bottom:1px dotted #97cae6;
+    color:#97cae6;
+}
+
+a:hover{
+    border-bottom:1px dashed transparent;
+}
+
+.clear{
+    clear:both;
+}
+
+/*
+ * CSS Styles that are needed by jScrollPane for it to operate correctly.
+ *
+ * Include this stylesheet in your site or copy and paste the styles below into your stylesheet - jScrollPane
+ * may not operate correctly without them.
+ */
+
+.jspContainer{
+    overflow: hidden;
+    position: relative;
+    overflow-y: hidden;
+}
+
+.jspPane{
+    position: absolute;
+    overflow-y: hidden;
+}
+
+.jspVerticalBar{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 100%;
+}
+
+.jspHorizontalBar{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 16px;
+    overflow-y: hidden;
+}
+
+.jspVerticalBar *,
+.jspHorizontalBar *{
+    margin: 0;
+    padding: 0;
+}
+
+.jspCap{
+    display: none;
+}
+
+.jspHorizontalBar .jspCap{
+    float: left;
+}
+
+.jspTrack{
+    background: #dde;
+    position: relative;
+}
+
+.jspDrag{
+    background: #bbd;
+    position: relative;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.jspHorizontalBar .jspTrack,
+.jspHorizontalBar .jspDrag{
+    float: right;
+    height: 100%;
+}
+
+.jspArrow{
+    background: #50506d;
+    text-indent: -20000px;
+    display: block;
+    cursor: pointer;
+}
+
+.jspArrow.jspDisabled{
+    cursor: default;
+    background: #80808d;
+}
+
+.jspVerticalBar .jspArrow{
+    height: 16px;
+}
+
+.jspHorizontalBar .jspArrow{
+    width: 16px;
+    float: left;
+    height: 100%;
+}
+
+.jspVerticalBar .jspArrow:focus{
+    outline: none;
+}
+
+.jspCorner{
+    background: #eeeef4;
+    float: left;
+    height: 100%;
+}
+
+textarea {
+    resize: none;
+    width: 350px;
+    height: 50px;
+}
+
+/* Yuk! CSS Hack for IE6 3 pixel bug :( */
+* html .jspCorner{
+    margin: 0 -3px 0 0;
+}
+</style>
+</head>
+
+<body>
+
+<div id="chatContainer">
+
+  
+    <div id="chatLineHolder"></div>
+    
+    <div id="chatBottomBar" >
+        
+        <form id="loginForm" method="post" action="">
+     
+        </form>
+        
+        <form id="submitForm" method="post" action="">
+            <input id="chatText" name="chatText"  maxlength="255" rows=2/>
+            <input type="hidden" id="projectID" name="projectID"/>
+            <input type="hidden" id="fromID" name="fromID"/>
+            <input type="hidden" id="toID" name="toID"/>
+            <input type="submit" class="blueButton" value="Submit" />
+        </form>
+        
+    </div>
+    
+</div>
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script src="js/jScrollPane/jquery.mousewheel.js"></script>
+<script src="js/jScrollPane/jScrollPane.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        // Run the init method on document ready:
+        var url = window.location.href.split('?')[1];
+        var params = getQueryParams(url);
+        var projectID = params.projectID;
+        var fromID = params.fromID;
+        var toID = params.toID;
+        chat.init(projectID,fromID,toID);  
+    });
+
+    function getQueryParams(qs) {
+
+        var params = {},
+            tokens,
+            re = /[?&]?([^=]+)=([^&]*)/g;
+
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+        return params;
+    }
+
+
+var chat = {
+    
+    // data holds variables for use in the class:
+    
+    data : {
+        lastID      : 0,
+        noActivity  : 0
+    },
+    
+    // Init binds event listeners and sets up timers:
+    
+    init : function(projectid,fromID,toID){
+
+        if(projectid){
+            chat.data.projectID = projectid;
+            $('#projectID').val(projectid);
+        }
+
+        if(fromID){
+            chat.data.fromID = fromID;
+            $('#fromID').val(fromID);
+        }
+
+        if(toID){
+            chat.data.toID = toID;
+            $('#toID').val(toID);
+        }
+        
+        // Using the defaultText jQuery plugin, included at the bottom:
+        $('#name').defaultText('Nickname');
+        $('#email').defaultText('Email');
+        
+        // Converting the #chatLineHolder div into a jScrollPane,
+        // and saving the plugin's API in chat.data:
+        
+        chat.data.jspAPI = $('#chatLineHolder').jScrollPane({
+            verticalDragMinHeight: 12,
+            verticalDragMaxHeight: 12
+        }).data('jsp');
+        
+        // We use the working variable to prevent
+        // multiple form submissions:
+        
+        var working = false;
+       
+        // Checking whether the user is already logged (browser refresh)        
+        $.tzGET('checkLogged',function(r){
+            if(r.logged){
+                chat.login(r.loggedAs.name,r.loggedAs.email);
+            }else{
+                var decodeparas = chat.decodeurl(window.location.href);
+                var name        = decodeparas.name;
+            }
+        });
+
+        $('#loginForm').submit(function(){
+            
+            if(working) return false;
+            working = true;
+            
+            // Using our tzPOST wrapper function
+            // (defined in the bottom):
+            
+            $.tzPOST('login',$(this).serialize(),function(r){
+                working = false;
+                
+                if(r.error){
+                    chat.displayError(r.error);
+                }
+                else chat.login(r.name,r.email);
+            });
+            
+            return false;
+        });
+        
+        // Submitting a new chat entry:
+        
+        $('#submitForm').submit(function(){
+            
+            var text = $('#chatText').val();
+            
+            if(text.length == 0){
+                return false;
+            }
+            
+            if(working) return false;
+            working = true;
+            
+            // Assigning a temporary ID to the chat:
+            var tempID = 't'+Math.round(Math.random()*1000000),
+                params = {
+                    id          : tempID,
+                    author      : chat.data.name,
+                    email       : chat.data.email,
+                    project_id  : chat.data.projectID,
+                    from_id     : chat.data.fromID,
+                    to_id       : chat.data.toID,
+                    text        : text.replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                };
+
+            // Using our addChatLine method to add the chat
+            // to the screen immediately, without waiting for
+            // the AJAX request to complete:            
+            chat.addChatLine($.extend({},params));
+            
+            // Using our tzPOST wrapper method to send the chat
+            // via a POST AJAX request:            
+            $.tzPOST('submitChat',$(this).serialize(),function(r){
+                working = false;
+                
+                $('#chatText').val('');
+                $('div.chat-'+tempID).remove();
+                
+                params['id'] = r.insertID;
+                chat.addChatLine($.extend({},params));
+            });
+            
+            return false;
+        });
+        
+        // Logging the user out:
+        /*
+        $('a.logoutButton').live('click',function(){
+            
+            $('#chatTopBar > span').fadeOut(function(){
+                $(this).remove();
+            });
+            
+            $('#submitForm').fadeOut(function(){
+                $('#loginForm').fadeIn();
+            });
+            
+            $.tzPOST('logout');
+            
+            return false;
+        });
+        */
+   
+        // Self executing timeout functions
+        
+        (function getChatsTimeoutFunction(){
+            chat.getChats(getChatsTimeoutFunction);
+        })();
+        /*
+        (function getUsersTimeoutFunction(){
+            chat.getUsers(getUsersTimeoutFunction);
+        })();
+        */
+    },
+
+
+    decodeurl: function(qs) {    
+        var params = {},
+            tokens,
+            re = /[?&]?([^=]+)=([^&]*)/g;
+
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+        return params;
+    },
+    
+    login : function(name,email){
+               
+        chat.data.name = name;
+        chat.data.email = email;
+        //$('#chatTopBar').html(chat.render('loginTopBar',chat.data));
+        
+        $('#loginForm').fadeOut(function(){
+            $('#submitForm').fadeIn();
+            $('#chatText').focus();
+        });
+        
+    },
+    
+    // The render method generates the HTML markup 
+    // that is needed by the other methods:
+    
+    render : function(template,params){
+        
+        var arr = [];
+        switch(template){
+            case 'loginTopBar':
+                arr = [
+                '<span><img src="',params.email,'" width="23" height="23" />',
+                '<span class="name">',params.name,
+                '</span><a href="" class="logoutButton ">Logout</a></span>'];
+            break;
+            
+            case 'chatLine':
+                arr = [
+                    '<div class="chat chat-',params.id,'"><span class="email"><img src="',params.email,
+                    '" width="23" height="23" onload="this.style.visibility=\'visible\'" />','</span><span class="author"><b>',params.author,
+                    ':</b></span><span class="text">',params.text,'</span><span class="time"><b>',params.time,'</b></span></div>'];
+            break;
+            
+            case 'user':
+                arr = [
+                    '<div class="user" title="',params.name,'"><img src="',
+                    params.email,'" width="30" height="30" onload="this.style.visibility=\'visible\'" /></div>'
+                ];
+            break;
+        }
+        
+        // A single array join is faster than
+        // multiple concatenations
+        
+        return arr.join('');
+        
+    },
+    
+    // The addChatLine method ads a chat entry to the page
+    
+    addChatLine : function(params){
+        
+        // All times are displayed in the user's timezone
+        
+        var d = new Date();
+        var ddmmyyyy;
+
+        if(params.time) {
+            
+            // PHP returns the time in UTC (GMT). We use it to feed the date
+            // object and later output it in the user's timezone. JavaScript
+            // internally converts it for us.
+            
+            d.setUTCHours(params.time.hours,params.time.minutes);
+            ddmmyyyy = params.time.ddmmyyyy;
+        }else{
+            var dd = d.getDate();
+            var mm = d.getMonth()+1; //January is 0!
+            var yyyy = d.getFullYear();
+
+            ddmmyyyy = (dd < 10 ? '0' : '' ) + dd + '/' + 
+                       (mm < 10 ? '0' : '' ) + mm + '/' + yyyy;
+        }
+   
+        params.time = ddmmyyyy + ' ' +
+                      (d.getHours() < 10 ? '0' : '' ) + d.getHours()+':'+
+                      (d.getMinutes() < 10 ? '0':'') + d.getMinutes();
+        
+        var markup = chat.render('chatLine',params),
+            exists = $('#chatLineHolder .chat-'+params.id);
+
+        if(exists.length){
+            exists.remove();
+        }
+        
+        if(!chat.data.lastID){
+            // If this is the first chat, remove the
+            // paragraph saying there aren't any:
+            
+            $('#chatLineHolder p').remove();
+        }
+        
+        // If this isn't a temporary chat:
+        if(params.id.toString().charAt(0) != 't'){
+            var previous = $('#chatLineHolder .chat-'+(+params.id - 1));
+            if(previous.length){
+                previous.after(markup);
+            }
+            else chat.data.jspAPI.getContentPane().append(markup);
+        }
+        else chat.data.jspAPI.getContentPane().append(markup);
+        
+        // As we added new content, we need to
+        // reinitialise the jScrollPane plugin:
+        
+        chat.data.jspAPI.reinitialise();
+        chat.data.jspAPI.scrollToBottom(true);
+        
+    },
+    
+    // This method requests the latest chats
+    // (since lastID), and adds them to the page.
+    
+    getChats : function(callback){
+        $.tzGET('getChats',{lastID: chat.data.lastID, projectID: chat.data.projectID, fromID: chat.data.fromID, toID: chat.data.toID},function(r){
+            
+            for(var i=0;i<r.chats.length;i++){
+                chat.addChatLine(r.chats[i]);
+            }
+            
+            if(r.chats.length){
+                chat.data.noActivity = 0;
+                chat.data.lastID = r.chats[i-1].id;
+            }
+            else{
+                // If no chats were received, increment
+                // the noActivity counter.
+                
+                chat.data.noActivity++;
+            }
+            
+            if(!chat.data.lastID){
+                chat.data.jspAPI.getContentPane().html('<p class="noChats">No chats yet</p>');
+            }
+            
+            // Setting a timeout for the next request,
+            // depending on the chat activity:
+            
+            var nextRequest = 1000;
+            
+            // 2 seconds
+            if(chat.data.noActivity > 3){
+                nextRequest = 2000;
+            }
+            
+            if(chat.data.noActivity > 10){
+                nextRequest = 5000;
+            }
+            
+            // 15 seconds
+            if(chat.data.noActivity > 20){
+                nextRequest = 15000;
+            }        
+            setTimeout(callback,nextRequest);
+        });
+    },
+    
+    // Requesting a list with all the users.
+    
+    getUsers : function(callback){
+        $.tzGET('getUsers',function(r){
+            
+            var users = [];
+            
+            for(var i=0; i< r.users.length;i++){
+                if(r.users[i]){
+                    users.push(chat.render('user',r.users[i]));
+                }
+            }
+            
+            var message = '';
+            
+            if(r.total<1){
+                message = 'No one is online';
+            }
+            else {
+                message = r.total+' '+(r.total == 1 ? 'person':'people')+' online';
+            }
+            
+            users.push('<p class="count">'+message+'</p>');
+            
+            $('#chatUsers').html(users.join(''));
+            
+            setTimeout(callback,15000);
+        });
+    },
+    
+    // This method displays an error message on the top of the page:
+    
+    displayError : function(msg){
+        var elem = $('<div>',{
+            id      : 'chatErrorMessage',
+            html    : msg
+        });
+        
+        elem.click(function(){
+            $(this).fadeOut(function(){
+                $(this).remove();
+            });
+        });
+        
+        setTimeout(function(){
+            elem.click();
+        },5000);
+        
+        elem.hide().appendTo('body').slideDown();
+    }
+};
+
+// Custom GET & POST wrappers:
+
+$.tzPOST = function(action,data,callback){
+    $.post('php/ajax.php?action='+action,data,callback,'json');
+}
+
+$.tzGET = function(action,data,callback){
+    $.get('php/ajax.php?action='+action,data,callback,'json');
+}
+
+// A custom jQuery method for placeholder text:
+
+$.fn.defaultText = function(value){
+    
+    var element = this.eq(0);
+    element.data('defaultText',value);
+    
+    element.focus(function(){
+        if(element.val() == value){
+            element.val('').removeClass('defaultText');
+        }
+    }).blur(function(){
+        if(element.val() == '' || element.val() == value){
+            element.addClass('defaultText').val(value);
+        }
+    });
+    
+    return element.blur();
+}
+</script>
+</body>
+</html>

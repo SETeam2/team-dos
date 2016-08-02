@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php include('../php_components/session_validation') ?>
 
 <?php
@@ -41,4 +42,49 @@ if ($result = $conn->query($sql_select_projects_id)) {
 }
 
 $conn->close();
+=======
+<?php include('../php_components/session_validation') ?>
+
+<?php
+// Open connection to mysql
+$servername = "localhost";
+$db_username = "root";
+$db_password = "cs673";
+$db_name = "master";
+
+// Create connection
+$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$useremail = $_SESSION['user']['email'];
+
+$sql_select_projects_id = "SELECT projects.id, users.id as user_id, users.email 
+                    FROM project_developers  
+                    JOIN users  ON project_developers.user_id=users.id  JOIN projects  ON project_developers.project_id=projects.id  
+                    where users.email='$useremail'
+                     ORDER BY projects.id
+                     LIMIT 1; ";
+
+if ($result = $conn->query($sql_select_projects_id)) {
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_array()) {
+            echo'<a href="Issue_Tracker.php?projectID='.$row["id"].'">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>';
+        }
+    }
+} else {
+    echo '<div class="panel-footer"><span class="pull-left">Join a project!</span>';
+}
+
+$conn->close();
+>>>>>>> origin/master
 ?>

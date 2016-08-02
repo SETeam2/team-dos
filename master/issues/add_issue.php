@@ -40,7 +40,11 @@ $sql = "INSERT INTO issues (id_project, title, priority, created_by_developer, d
 if ($conn->query($sql) === TRUE) {
     echo "New record created successfully";
 echo "<script>";
+<<<<<<< HEAD
 echo "top.window.location = 'http://52.203.18.172/master/Issue_Tracker.php?projectID=$project';";
+=======
+echo "top.window.location = 'http://52.203.18.172/master/Issue_Tracker.php?projectID=1';";
+>>>>>>> origin/master
 echo "</script>";
 
 

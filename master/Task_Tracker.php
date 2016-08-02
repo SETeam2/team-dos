@@ -49,6 +49,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
+<<<<<<< HEAD
                            Task Tracker <small>
                                 <?php
                                 $servername = "localhost";
@@ -79,6 +80,41 @@
                                 $conn->close();
                                 ?>
                             </small>
+=======
+                        <?php
+
+// Open connection to mysql
+$servername = "localhost";
+$db_username = "root";
+$db_password = "cs673";
+$db_name = "master";
+
+// Create connection
+$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$projectID = 0;
+if(isset($_GET['projectID'])){
+    $projectID = $_GET['projectID'];   
+}
+
+$sql_query = "SELECT * FROM projects WHERE id='$projectID' LIMIT 1";
+
+if ($result = $conn->query($sql_query)) {
+    if ($result->num_rows > 0) { 
+        $row = $result->fetch_array();
+        echo $row["name"];
+    }
+}
+
+$conn->close();
+?>
+                           Task Tracker <small>  </small>
+>>>>>>> origin/master
                         </h1>    
                     </div>
                 </div>

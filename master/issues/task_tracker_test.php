@@ -118,9 +118,12 @@ $curr_project = $conn->query("SELECT * FROM projects WHERE id='{$_GET['projectID
 					<h4 class="modal-title" id="myModalLabel">Create New Task</h4>
 				</div>
 				<form method="post" action="add_task.php">
+<<<<<<< HEAD
 				<input type="hidden" id="projectID" name="projectID" value="<?php 
                                     echo $_GET['projectID'];
                                     ?>"/>
+=======
+>>>>>>> origin/master
 					<div class="modal-body">
 						<div class="form-group">
 							<label class="control-label">Title:</label>

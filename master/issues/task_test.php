@@ -79,8 +79,12 @@ echo "<title>Task #".$issue_data[id]."</title>";
     <div class="container">
 
 		<div class="page-header">
+<<<<<<< HEAD
 			<button type="button" class="btn btn-primary"
 					onclick="window.location.href=<?php echo "'task_tracker_test.php?projectID=".$_SESSION[current_project]."'";?>">Back to tasks</button>
+=======
+			<button type="button" class="btn btn-primary"  onclick="window.location.href='task_tracker_test.php';">Back to tasks</button>
+>>>>>>> origin/master
 
 			<?php echo "<h2>Task #".$issue_data[id]." <small>Created ".$issue_data[date_created]." by ".$creator[username]."</small></h2>"; ?>
 

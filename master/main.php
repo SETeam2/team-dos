@@ -36,6 +36,7 @@
 
 <body>
 
+<<<<<<< HEAD
 <div id="wrapper">
 
     <?php include('php_components/navigation_bar.php') ?>
@@ -67,9 +68,66 @@
                                     <div>Tasks</div>
                                 </div>
                             </div>
+=======
+    <div id="wrapper">
+
+        <?php include('php_components/navigation_bar.php') ?>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            My Dashboard
+                        </h1>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-comments fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div>Messages</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="chat.php">
+                                <div class="panel-footer">
+                                    <span class="pull-left">My messages</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-tasks fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge"><?php include('queries/task_count') ?></div>
+                                        <div>Tasks</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php include('queries/generate_task_link') ?>
+>>>>>>> origin/master
                         </div>
                         <?php include('queries/generate_task_link') ?>
                     </div>
+<<<<<<< HEAD
                 </div>
                 <div class="col-sm-6">
                     <div class="panel panel-red">
@@ -115,6 +173,54 @@
                                     <div>Issues</div>
                                 </div>
                             </div>
+=======
+                    <div class="col-sm-4">
+                        <div class="panel panel-red">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa fa-bell fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">
+                                            <?php
+
+// Open connection to mysql
+$servername = "localhost";
+$db_username = "root";
+$db_password = "cs673";
+$db_name = "master";
+
+// Create connection
+$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$userid    = $_SESSION['user']['id'];
+$useremail = $_SESSION['user']['email'];
+
+$sql_select_projects_id = "select COUNT(id) as count from issues where status <> 'Completed' AND assignee = '$userid'";
+
+if ($result = $conn->query($sql_select_projects_id)) {
+    if ($result->num_rows > 0) {                        
+        while ($row = $result->fetch_array()) {
+            echo $row["count"];
+        }   
+    }
+}
+
+$conn->close();
+?>
+                                        </div>
+                                        <div>Issues</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php include('queries/generate_issue_link') ?>
+>>>>>>> origin/master
                         </div>
                         <?php include('queries/generate_issue_link') ?>
                     </div>
@@ -152,6 +258,7 @@
 
                         $sql_query = "SELECT * FROM projects";
 
+<<<<<<< HEAD
                         if ($result = $conn->query($sql_query)) {
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_array()) {
@@ -159,6 +266,15 @@
                                 }
                             }
                         }
+=======
+if ($result = $conn->query($sql_query)) {
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_array()) {
+            echo '<option value='.$row["id"].'>'.$row["name"].'</option>';
+        }
+    }
+}
+>>>>>>> origin/master
 
                         $conn->close();
                         ?>
