@@ -20,7 +20,7 @@ $_SESSION['current_project'] = $_GET['projectID'] ;//$_GET['projectID']
 <meta name="author" content="">
 <link rel="icon" href="">
 
-<title>Issue Tracker</title>
+<title>Task Tracker</title>
 
 <!-- Bootstrap core CSS -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -33,7 +33,7 @@ $_SESSION['current_project'] = $_GET['projectID'] ;//$_GET['projectID']
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/css/bootstrap-datepicker3.min.css" />
 
 <!-- Custom styles
-<link href="issue_tracker.css" rel="stylesheet">-->
+<link href="task_tracker.css" rel="stylesheet">-->
 
 </head>
 
@@ -56,7 +56,7 @@ if ($conn->connect_error) {
 }
 
 // query issue table
-$query_info = "SELECT * FROM issues WHERE id_project='{$_GET['projectID']}';";
+$query_info = "SELECT * FROM tasks WHERE id_project='{$_GET['projectID']}';";
 $result = $conn->query($query_info);
 
 // query current project users
@@ -74,14 +74,14 @@ $curr_project = $conn->query("SELECT * FROM projects WHERE id='{$_GET['projectID
 		<!--<div class="page-header">-->
 		<p>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                Create New Issue
+                Create New Task
             </button>
         </p><br>
 		<!--</div>-->
 		<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>Issue #</th>
+                <th>Task #</th>
                 <th>Title</th>
                 <th>Priority</th>
 				<th>Status</th>
@@ -94,7 +94,7 @@ $curr_project = $conn->query("SELECT * FROM projects WHERE id='{$_GET['projectID
         	// fetch associative array
         	while ($row = $result->fetch_assoc()) {
         		echo "<tr>";
-        		echo "<td><a href=\"issue_test.php?issueid=".$row[id]."\">".$row[id]."</a></td>";
+        		echo "<td><a href=\"task_test.php?issueid=".$row[id]."\">".$row[id]."</a></td>";
                 echo "<td>".$row[title]."</td>";
                 echo "<td>".$row[priority]."</td>";
                 echo "<td>".$row[status]."</td>";
@@ -115,9 +115,9 @@ $curr_project = $conn->query("SELECT * FROM projects WHERE id='{$_GET['projectID
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="myModalLabel">Create New Issue</h4>
+					<h4 class="modal-title" id="myModalLabel">Create New Task</h4>
 				</div>
-				<form method="post" action="add_issue.php">
+				<form method="post" action="add_task.php">
 				<input type="hidden" id="projectID" name="projectID" value="<?php 
                                     echo $_GET['projectID'];
                                     ?>"/>
@@ -151,7 +151,7 @@ $curr_project = $conn->query("SELECT * FROM projects WHERE id='{$_GET['projectID
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Create Issue</button>
+						<button type="submit" class="btn btn-primary">Create Task</button>
 					</div>
 				</form>
 			</div>

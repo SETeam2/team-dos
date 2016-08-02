@@ -26,14 +26,14 @@ if ($conn->connect_error) {
 // query current project name
 $curr_project = $conn->query("SELECT * FROM projects WHERE id='{$_SESSION["current_project"]}';")->fetch_assoc();
 
-#select issues.xyzz, users.username, from issues join users on users.id=issues.assignee; 
-// query issue table
-$sql = "SELECT * FROM issues WHERE id = $issueid";
+#select tasks.xyzz, users.username, from tasks join users on users.id=issues.assignee; 
+// query tasks table
+$sql = "SELECT * FROM tasks WHERE id = $issueid";
 $result = $conn->query($sql);
 $issue_data = $result->fetch_assoc();
 
 // get issue comments
-$issue_comments = $conn->query("SELECT * FROM issue_comments WHERE issue_id = $issueid");
+$issue_comments = $conn->query("SELECT * FROM task_comments WHERE issue_id = $issueid");
 
 // get project users
 $get_users_query = "SELECT users.username, users.id FROM project_developers JOIN users ON project_developers.user_id=users.id JOIN projects ON project_developers.project_id=projects.id WHERE project_id='{$_SESSION["current_project"]}';";
@@ -58,7 +58,7 @@ $creator = $get_creator->fetch_assoc();
 <link rel="icon" href="">
 
 <?php
-echo "<title>Issue #".$issue_data[id]."</title>";
+echo "<title>Task #".$issue_data[id]."</title>";
 ?>
 
 <!-- Bootstrap core CSS -->
@@ -69,8 +69,8 @@ echo "<title>Issue #".$issue_data[id]."</title>";
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/css/bootstrap-datepicker3.min.css" />
 -->
 
-<!-- Custom styles 
-<link href="issue_tracker.css" rel="stylesheet">-->
+<!-- Custom styles -->
+<link href="task_tracker.css" rel="stylesheet">
 
 </head>
 
@@ -79,13 +79,14 @@ echo "<title>Issue #".$issue_data[id]."</title>";
     <div class="container">
 
 		<div class="page-header">
-			<button type="button" class="btn btn-primary" onclick="window.location.href=<?php echo "'issue_tracker_test.php?projectID=".$_SESSION[current_project]."'";?>">Back</button>
+			<button type="button" class="btn btn-primary"
+					onclick="window.location.href=<?php echo "'task_tracker_test.php?projectID=".$_SESSION[current_project]."'";?>">Back to tasks</button>
 
-			<?php echo "<h2>Issue #".$issue_data[id]." <small>Created ".$issue_data[date_created]." by ".$creator[username]."</small></h2>"; ?>
+			<?php echo "<h2>Task #".$issue_data[id]." <small>Created ".$issue_data[date_created]." by ".$creator[username]."</small></h2>"; ?>
 
 		</div>
 		
-		<form class="form-horizontal" role="form" method="post" action="update_issue.php?issueid=<?php echo $issue_data[id];?>"> 
+		<form class="form-horizontal" role="form" method="post" action="update_task.php?issueid=<?php echo $issue_data[id];?>"> 
 			<div class="form-group">
 				<label class="col-sm-2 control-label">Title:</label>
 				<div class="col-sm-10">
@@ -177,7 +178,7 @@ echo "<title>Issue #".$issue_data[id]."</title>";
 		}
 		
 		?>
-		<form method="post" action="add_comment.php?issueid=<?php echo $issue_data[id];?>">
+		<form method="post" action="add_comment2.php?issueid=<?php echo $issue_data[id];?>">
 			<div class="form-group">
 				<label for="message-text" class="control-label">New Comment:</label>
 				<textarea class="form-control" name="comment_text" required="required"></textarea>

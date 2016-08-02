@@ -49,7 +49,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                           Issue Tracker <small>
+                           Task Tracker <small>
                                 <?php
                                 $servername = "localhost";
                                 $db_username = "root";
@@ -75,6 +75,7 @@
                                         echo $row["name"];
                                     }
                                 }
+
                                 $conn->close();
                                 ?>
                             </small>
@@ -84,7 +85,7 @@
 
             <div id="my-chat"> 
                 <iframe src=<?php 
-                    $url = "issues/issue_tracker_test.php";
+                    $url = "issues/task_tracker_test.php";
                     if(isset($_GET['projectID'])){
                         $url .=  "?projectID=".$_GET['projectID'];
                     }else{

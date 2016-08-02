@@ -5,7 +5,7 @@ session_start ();
 if (! isset ( $_SESSION['user']['name'] )) {
     header ( "Location: ../login.html" ); // Redirect the user if not logged in
 } else if (! isset ( $_POST["title"] )) {
-    header ( "Location: issue_tracker_test.php" ); // Redirect if no issue posted
+    header ( "Location: task_tracker_test.php" ); // Redirect if no issue posted
 } else {
 
 $title = addslashes($_POST["title"]);
@@ -14,7 +14,6 @@ $assignee = $_POST["assignee"];
 $description = addslashes($_POST["description"]);
 $project = $_POST['projectID'];
 
-//echo $project." "
 echo $title." ";
 echo $priority." ";
 echo $assignee." ";
@@ -35,20 +34,23 @@ if ($conn->connect_error) {
 }
 
 // insert in issue table
-$sql = "INSERT INTO issues (id_project, title, priority, created_by_developer, description, status, last_updated, assignee) VALUES ('{$_SESSION['current_project']}','$title', '$priority','{$_SESSION[user][id]}', '$description', 'New', CURRENT_TIMESTAMP, '$assignee')";
+$sql = "INSERT INTO tasks (id_project, title, priority, created_by_developer, description, status, last_updated, assignee) VALUES ('{$_SESSION['current_project']}','$title', '$priority','{$_SESSION[user][id]}', '$description', 'New', CURRENT_TIMESTAMP, '$assignee')";
 
 if ($conn->query($sql) === TRUE) {
     echo "New record created successfully";
 echo "<script>";
-echo "top.window.location = 'http://52.203.18.172/master/Issue_Tracker.php?projectID=$project';";
-echo "</script>";
-
-
+echo "top.window.location = 'http://52.203.18.172/master/Task_Tracker.php?projectID=$project';";
+echo "</script>";    
+/*<?php echo '<script type="text/javascript">window.top.location.href = "http://52.203.18.172/master2/Task_Tracker.php?projectID=1' . $_GET['classid'] . '"; </script>' ?>
+/*header("Location:http://52.203.18.172/master2/Task_Tracker.php?projectID=1");
+ 
+/* Make sure that code below does not get executed when we redirect. */
+exit;
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
 
-echo "<p><a href=\"issue_tracker_test.php\">Back</a><p>";
+echo "<p><a href=\"task_tracker.php\">Back</a><p>";
 
 $conn->close();
 

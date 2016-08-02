@@ -1,4 +1,4 @@
-<?php
+<php
 
 ini_set('display_errors',1);
 error_reporting(E_ALL);
@@ -8,13 +8,9 @@ include 'dbconfig.php';
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Shared Resources</title>
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 <body>
-<div id="header">
-<label>Shared Resources</label>
-</div>
 <div id="body">
  <table width="80%" border="1">
     <tr>
@@ -52,6 +48,12 @@ mysql_select_db($dbname) or die('database selection problem');
  }
  ?>
     </table>
+    <br>
+    <br>
+    <br>
+    <br>
+    <a target="_blank" href="https://drive.google.com/drive/folders/0B0GubujUmRFYYUNfWHFGcE9sbXc">Team Dos Google Drive Folder</a>
+    
 </div>
 </body>
 </html>
